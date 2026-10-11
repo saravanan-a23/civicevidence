@@ -1,0 +1,714 @@
+P0 [align=CENTER (1)]: RAMCO INSTITUTE OF TECHNOLOGY, RAJAPALAYAM
+P1 [align=None]: DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING
+P4 [align=CENTER (1)]: CS3711 – SUMMER INTERNSHIP INTERNSHIP REPORT
+P6 [align=None]: CivicEvidence – SECURE DIGITAL EVIDENCE MANAGEMENT SYSTEM
+P10 [align=CENTER (1)]: Submitted by
+P11 [align=None]: SARAVANAN A
+P12 [align=CENTER (1)]: Register No:
+P16 [align=None]: BACHELOR OF ENGINEERING COMPUTER SCIENCE AND ENGINEERING
+P20 [align=CENTER (1)]: CLOUDSTRAND PRIVATE LIMITED
+P21 [align=CENTER (1)]: Chennai
+P26 [align=CENTER (1)]: INTERNSHIP DURATION: 23.07.2026 – 22.08.2026
+P28 [align=CENTER (1)]: OCTOBER 2026
+P32 [align=None]: BONAFIDE CERTIFICATE
+P36 [align=JUSTIFY (3)]: Certified that this Internship Report entitled “CivicEvidence – Secure Digital Evidence Management System with Applied Cryptography and Real-Time AI Assistant” is the bonafide work of SARAVANAN A (Register No: 	), who carried out the Summer Internship at CLOUDSTRAND PRIVATE LIMITED, Chennai, under the supervision of Mr. Pon Prabhakar.
+P62 [align=None]: DECLARATION
+P64 [align=JUSTIFY (3)]: I hereby declare that this report presents the work carried out by me during the Summer Internship at CLOUDSTRAND PRIVATE LIMITED, Chennai for the specified duration and that the information presented is true to the best of my knowledge.
+P75 [align=JUSTIFY (3)]: Date: ————————	Signature: ————————
+P77 [align=None]: EXECUTIVE SUMMARY
+P79 [align=JUSTIFY (3)]: The Summer Internship at CLOUDSTRAND PRIVATE LIMITED, Chennai provided valuable practical exposure to full-stack web application development, applied cryptography, cloud security, role-based access control, and artificial intelligence integration in an industry-oriented environment. As part of the internship, the project titled “CivicEvidence – Secure Digital Evidence Management System (DEMS)” was developed to address critical challenges in digital evidence handling, namely data tampering, a broken chain of custody, and unencrypted plaintext storage in law enforcement and forensic applications.
+P80 [align=JUSTIFY (3)]: The primary objective of the project was to develop a full-stack MERN (MongoDB, Express.js, React 18, Node.js) web application that provides mathematical proof of evidence integrity using SHA-256 cryptographic checksums, secures evidence files at rest using AES-256-GCM envelope encryption, and records an immutable Chain of Custody audit trail aligned with ISO/IEC 27037 and NIST guidelines. An embedded AI Forensic Assistant was also integrated into the dashboard, combining real-time MongoDB regex search with optional Google Gemini API integration to help investigators retrieve evidence artifacts and look up compliance guidance.
+P81 [align=JUSTIFY (3)]: The implementation involved requirement analysis, database schema design, development of the REST API, JWT-based authentication with refresh token rotation, a four-tier role-based access control (RBAC) model, two-factor authentication through email OTP using Nodemailer, an applied cryptography engine built on the native Node.js crypto module, an ISO 27037 compliant audit logger, and a glassmorphic React 18 dashboard built with Vite. Security middleware such as Helmet, CORS policy controls and express-rate-limit was used to harden the backend against common web attacks.
+P82 [align=JUSTIFY (3)]: Testing and debugging formed an important part of the development process. Registration validation, evidence upload, download with integrity verification, AI assistant search and password reset through OTP were tested using cURL, Node.js test scripts and the web interface. Issues such as proxy CORS errors, Mongoose populate errors, frontend icon import failures and email-verification flag updates were analysed and resolved systematically.
+P83 [align=JUSTIFY (3)]: The internship also provided exposure to professional practices such as requirement analysis, modular system design, defensive security programming, iterative testing, documentation and local deployment. The system was deployed and verified in a local environment, with the backend running on port 5002 and the frontend on port 5174.
+P85 [align=None]: TABLE OF CONTENTS
+P88 [align=JUSTIFY (3)]: ORGANIZATION AND INDUSTRY EXPOSURE
+P89 [align=JUSTIFY (3)]: Organization Profile
+P90 [align=JUSTIFY (3)]: CLOUDSTRAND PRIVATE LIMITED, Chennai is a software engineering and cybersecurity solutions organization that provides enterprise-grade software development, cloud architecture, cryptographic security auditing and artificial intelligence solutions to industry clients. The internship was carried out in the Software Engineering and Cybersecurity division, where exposure was provided to industrial software development standards, version control workflows, applied cryptography, secure backend API design and client-side UI/UX engineering.
+P91 [align=JUSTIFY (3)]: During the internship, the role of secure software engineering in protecting sensitive organizational data was observed. Modern applications must handle authentication, authorization, encryption, auditing and data integrity together, and the division demonstrated how these concerns are addressed at design time rather than added afterwards.
+P92 [align=JUSTIFY (3)]: The organization provided a professional environment in which the importance of system reliability, data security, structured documentation, code quality and systematic testing could be understood. This exposure helped in relating the concepts learned in the Computer Science and Engineering curriculum to practical industry requirements.
+P93 [align=JUSTIFY (3)]: Internship Role and Responsibilities
+P94 [align=JUSTIFY (3)]: During the internship, I worked in the role of a Full-Stack Software Engineering and Security Intern and was involved in the design, development and testing of the project titled “CivicEvidence – Secure Digital Evidence Management System”. The internship provided practical experience in combining full-stack web development with applied cryptography and AI integration.
+P95 [align=JUSTIFY (3)]: The responsibilities carried out during the internship included:
+P96 [align=LEFT (0)]: Designing and implementing the RESTful backend API using Node.js, Express.js and MongoDB (Mongoose ODM).
+P97 [align=LEFT (0)]: Engineering the applied cryptography engine using the Node.js native crypto module for AES-256-GCM envelope encryption and SHA-256 hashing.
+P98 [align=LEFT (0)]: Implementing role-based access control (RBAC) middleware enforcing four clearance tiers: Admin, Officer, Investigator and User.
+P99 [align=LEFT (0)]: Building the email dispatch service using Nodemailer (Gmail SMTP transport) for two-factor OTP codes and password reset workflows.
+P100 [align=LEFT (0)]: Developing the glassmorphic React 18 frontend dashboard using Vite, React Router v6, custom CSS design tokens and interactive password visibility toggles.
+P101 [align=LEFT (0)]: Designing and implementing the AI Forensic Assistant component (AiChatAssistant.jsx) with live MongoDB regex search and Google Gemini API integration.
+P102 [align=LEFT (0)]: Testing individual modules, debugging problems and integrating them into a working system.
+P103 [align=LEFT (0)]: Maintaining	project	documentation	and	incorporating	mentor feedback	during development and testing.
+P105 [align=JUSTIFY (3)]: Industry Practices and Processes Observed
+P106 [align=JUSTIFY (3)]: The internship provided exposure to several software engineering and security practices followed during development of the solution. The project followed a systematic process from requirement analysis through design, implementation, testing, documentation and deployment.
+P107 [align=None]: Requirement Analysis and System Specification
+P108 [align=JUSTIFY (3)]: Technical constraints, threat models and user role boundaries were defined clearly before implementation, so that security requirements such as encryption at rest, auditability and least-privilege access were part of the design.
+P109 [align=None]: Modular Architecture and Clean Code
+P110 [align=JUSTIFY (3)]: Controllers, routes, models, middleware and services were structured into decoupled layers. This separation made each part of the backend easier to test, debug and extend.
+P111 [align=None]: Defensive Security Programming
+P112 [align=JUSTIFY (3)]: Helmet HTTP security headers, CORS policy controls, express-rate-limit brute-force limiters and regex-based password complexity validators were used to reduce the attack surface of the application.
+P113 [align=None]: Iterative Testing and Debugging
+P114 [align=JUSTIFY (3)]: End-to-end API testing was conducted using cURL and Node.js test scripts before deployment. Every modification was verified before moving to the next stage, which improved the reliability of the system.
+P115 [align=None]: Documentation and Professional Practices
+P116 [align=JUSTIFY (3)]: Technical documentation recorded requirements, implementation details, test results and observations. Mentor interaction, task planning, technical discussion and feedback-based improvement demonstrated the importance of communication in completing a technical project.
+P117 [align=JUSTIFY (3)]: Tools, Technologies and Platforms
+P118 [align=JUSTIFY (3)]: The internship provided practical exposure to the tools and technologies used for developing and testing the CivicEvidence system. The major technologies included React 18, Vite, Node.js, Express.js, MongoDB, the Node.js crypto module, JWT, bcryptjs, Nodemailer and the Google Gemini API.
+P119 [align=None]: TABLE 1
+P120 [align=CENTER (1)]: TOOLS, TECHNOLOGIES AND PLATFORMS[1]-[6]
+P124 [align=JUSTIFY (3)]: CO Alignment: CO1 – Industry Practices, Processes, Techniques and Technology.
+P126 [align=LEFT (0)]: INTERNSHIP OBJECTIVES AND LEARNING TARGETS
+P127 [align=JUSTIFY (3)]: The internship objectives were defined to align academic knowledge in Computer Science and Engineering with practical industry requirements in cybersecurity and software engineering. The learning objectives focused on applied cryptography, secure access control, full-stack development with an AI assistant, and improving technical documentation and testing skills through hands-on project activities.
+P128 [align=None]: TABLE 2
+P129 [align=CENTER (1)]: INTERNSHIP OBJECTIVES AND EVIDENCE[1]-[9]
+P132 [align=JUSTIFY (3)]: PROBLEM / REQUIREMENT IDENTIFICATION AND ANALYSIS
+P133 [align=JUSTIFY (3)]: Background and Context
+P134 [align=JUSTIFY (3)]: In modern law enforcement and judicial proceedings, digital evidence such as CCTV video recordings, wiretaps, crime scene photographs and forensic disk images serves as critical proof in court. However, managing digital evidence introduces serious challenges regarding file authenticity, unauthorized access and evidentiary admissibility.
+P135 [align=JUSTIFY (3)]: For digital evidence to be accepted, it must be shown that the evidence has not been altered since collection and that every person who handled it is accounted for. Standards such as ISO/IEC 27037 and NIST SP 800-86 describe the principles for identifying, collecting, acquiring and preserving digital evidence, including the need for an unbroken chain of custody.
+P137 [align=JUSTIFY (3)]: Many organizations still store such evidence in ordinary shared folders or file servers. These provide no cryptographic proof of integrity, no reliable record of access and no protection if the storage itself is compromised. A dedicated secure system that combines cryptography, access control and auditing was therefore proposed.
+P138 [align=JUSTIFY (3)]: Problem Statement
+P139 [align=None]: Traditional file management systems suffer from the following major security weaknesses:
+P140 [align=LEFT (0)]: Risk of Data Tampering: Files stored without cryptographic hashes can be modified or corrupted without detection, invalidating evidence in court.
+P141 [align=LEFT (0)]: Broken Chain of Custody: Standard server directories do not log who accessed, viewed, downloaded or shared evidence, which violates ISO 27037 expectations.
+P142 [align=LEFT (0)]: Unencrypted Plaintext Storage: Files saved in plain text on server disks expose sensitive legal artifacts to data breaches and insider threats.
+P143 [align=LEFT (0)]: Slow Manual Investigation: Investigators spend considerable time searching unstructured folders to locate relevant evidence.
+P144 [align=None]: Therefore, the problem was defined as:
+P145 [align=JUSTIFY (3)]: “To design and develop a secure, web-based Digital Evidence Management System that guarantees evidence integrity using cryptographic checksums, protects evidence at rest using envelope encryption, records an immutable chain of custody, enforces role-based access, and assists investigators through an AI-based search assistant.”
+P146 [align=JUSTIFY (3)]: Existing Process / Existing System
+P147 [align=JUSTIFY (3)]: Before the proposed system, digital evidence was typically handled using conventional file-server directories, email attachments and manual registers. The existing process involved several individual activities:
+P148 [align=LEFT (0)]: Manual Storage and Naming
+P149 [align=None]: Evidence files were saved in folders organized by naming convention. Any user with folder access could modify, rename or replace a file without leaving a trace.
+P150 [align=LEFT (0)]: No Integrity Verification
+P151 [align=None]: No checksum was computed when evidence was collected, so it was not possible to demonstrate later that a file was identical to the original.
+P152 [align=LEFT (0)]: Manual Custody Records
+P153 [align=None]: Handover of evidence was recorded on paper or in spreadsheets, which are easy to alter and are not linked to actual file access.
+P154 [align=LEFT (0)]: Plaintext Storage
+P155 [align=None]: Files were kept unencrypted on disk, so anyone with access to the storage, a backup or the server could read them.
+P156 [align=LEFT (0)]: Manual Search
+P157 [align=None]: Locating evidence related to a case required browsing folders and opening files individually.
+P158 [align=LEFT (0)]: Limitations of the Existing Process
+P159 [align=LEFT (0)]: No tamper detection for stored files.
+P160 [align=LEFT (0)]: No automatic record of who accessed or downloaded evidence.
+P161 [align=LEFT (0)]: No encryption of evidence at rest.
+P163 [align=LEFT (0)]: No role-based restriction of access.
+P164 [align=LEFT (0)]: Slow and error-prone search for evidence.
+P165 [align=LEFT (0)]: Difficult to demonstrate compliance with ISO 27037.
+P166 [align=None]: These limitations provided the motivation for developing a secure evidence management system that brings integrity, confidentiality, accountability and search together in one platform.
+P167 [align=JUSTIFY (3)]: Requirements and Constraints
+P168 [align=None]: The requirements and constraints were identified to define the functional, non-functional, technical and operational aspects of the proposed system.
+P169 [align=None]: TABLE 3
+P170 [align=CENTER (1)]: REQUIREMENTS AND CONSTRAINTS[1],[2],[3],[4],[5]
+P173 [align=JUSTIFY (3)]: Problem Analysis
+P174 [align=JUSTIFY (3)]: The problem was analyzed by examining the activities involved in handling digital evidence from ingestion to retrieval. The analysis showed that evidence management involves several independent concerns: proving integrity, protecting confidentiality, controlling access, recording accountability and enabling efficient search.
+P175 [align=JUSTIFY (3)]: A major technical challenge was designing the encryption approach. Encrypting every file directly with a single master key would make key rotation difficult and increase the impact of a key leak. Envelope encryption, in which each file uses its own Data Encryption Key (DEK) that is itself protected by a Master Key, was selected to address this.
+P176 [align=JUSTIFY (3)]: Another challenge was ensuring that the audit trail could not be bypassed. The audit logger was therefore implemented so that it records the user ID, IP address, device user-agent, action and timestamp automatically for every relevant request, rather than relying on manual entries.
+P177 [align=JUSTIFY (3)]: Authentication also required careful design. Passwords had to be hashed, tokens had to expire and rotate, brute-force attempts had to be limited and account recovery had to be verified through a second factor. Finally, the AI assistant had to give quick, reliable results from the evidence database even when an external LLM was unavailable, which led to the design of a live MongoDB regex search with optional Gemini integration.
+P178 [align=JUSTIFY (3)]: CO Alignment: CO2 – Analyze and design solutions to complex business problems.
+P180 [align=JUSTIFY (3)]: SOLUTION DESIGN AND METHODOLOGY
+P181 [align=JUSTIFY (3)]: Proposed Solution
+P182 [align=JUSTIFY (3)]: CivicEvidence is a secure web-based Digital Evidence Management System that combines applied cryptography, role-based access control and AI-assisted search. The system consists of a React frontend, an Express.js backend, a MongoDB database and a cryptography and audit layer. The proposed solution provides the following features:
+P183 [align=LEFT (0)]: SHA-256 Checksums: A cryptographic hash is computed on ingestion so that bit-level tampering can be detected instantly.
+P184 [align=LEFT (0)]: AES-256 Envelope Encryption: Files are encrypted at rest with dedicated Data Encryption Keys protected by a Master Key.
+P185 [align=LEFT (0)]: ISO 27037 Audit Logger: The user ID, IP address, device user-agent and exact timestamp are recorded for every action.
+P186 [align=LEFT (0)]: Role-Based Access Control: Four clearance levels (Admin, Officer, Investigator, User) restrict access to routes and operations.
+P187 [align=LEFT (0)]: Two-Factor Authentication: OTP codes sent by email verify identity during verification and password reset.
+P188 [align=LEFT (0)]: Smart AI Assistant: A floating chat widget performs live MongoDB regex evidence lookup and provides legal compliance guidance.
+P189 [align=JUSTIFY (3)]: System Architecture / Workflow
+P190 [align=JUSTIFY (3)]: The overall architecture consists of the browser-based client, the React frontend, the Express.js REST API with its security middleware, and the supporting services for cryptography, auditing, email and AI. Figure 4.2.1 shows the interaction between these components.
+P193 [align=CENTER (1)]: Figure 4.2.1 – Architecture Diagram of the CivicEvidence DEMS
+P195 [align=JUSTIFY (3)]: The user interacts with the React dashboard through a browser. Each request is sent to the Express API as JSON. The API first applies Helmet, CORS and rate-limiting middleware, then verifies the JWT and checks the user’s role against the route policy. Authorised requests are handled by the relevant controller, which may call the cryptography engine, store or read metadata in MongoDB, send an email through Nodemailer, or call the AI engine. The audit logger records the action in MongoDB.
+P196 [align=None]: System Workflow
+P197 [align=JUSTIFY (3)]: The general workflow for evidence upload and retrieval is as follows:
+P198 [align=LEFT (0)]: The user logs in with credentials and, where required, verifies an OTP sent to the registered email.
+P199 [align=LEFT (0)]: The server issues a JWT access token and a refresh token.
+P200 [align=LEFT (0)]: The user uploads an evidence file together with its case details.
+P201 [align=LEFT (0)]: The backend computes the SHA-256 hash of the file.
+P202 [align=LEFT (0)]: A random DEK and initialization vector are generated and the file is encrypted using AES-256-GCM.
+P203 [align=LEFT (0)]: The DEK is wrapped with the Master Key, the encrypted file is stored in backend/uploads/ and the metadata and hash are stored in MongoDB.
+P204 [align=LEFT (0)]: The audit logger records the upload action with user, IP address, user-agent and timestamp.
+P205 [align=LEFT (0)]: On download, the DEK is unwrapped, the file is decrypted, the hash is recomputed and compared with the stored hash before the file is delivered.
+P206 [align=JUSTIFY (3)]: Module / Component Design
+P207 [align=JUSTIFY (3)]: The modules were defined to organize the major functional parts of the system. Each module performs a specific role, from authentication and cryptography to auditing and AI-assisted search. Table 4 summarizes the purpose, inputs, processing and outputs of each component.
+P208 [align=None]: TABLE 4
+P209 [align=CENTER (1)]: MODULES AND COMPONENTS[1],[3],[4],[5]
+P213 [align=CENTER (1)]: Figure 4.3.1 – Envelope Encryption and Integrity Verification Flow
+P214 [align=JUSTIFY (3)]: Authentication Module
+P215 [align=JUSTIFY (3)]: The authentication module handles registration, login, password hashing with bcryptjs, JWT access and refresh token rotation, and OTP-based verification. A password complexity validator requires at least eight characters with upper-case, lower-case and symbol characters.
+P216 [align=JUSTIFY (3)]: Cryptographic Engine
+P217 [align=JUSTIFY (3)]: The cryptographic engine computes a SHA-256 checksum when evidence is ingested and encrypts the file using AES-256-GCM with a unique DEK and initialization vector. The DEK is protected by a Master Key, which implements envelope encryption. GCM mode also provides authenticated encryption, so modification of the encrypted file is detected during decryption.
+P218 [align=JUSTIFY (3)]: Audit Logger Module
+P219 [align=JUSTIFY (3)]: The audit logger records the user ID, IP address, device user-agent, action, target and timestamp of every relevant operation. These records form the Chain of Custody required by ISO 27037.
+P220 [align=JUSTIFY (3)]: Role Clearance Guard
+P221 [align=JUSTIFY (3)]: The RBAC middleware compares the role in the verified token with the policy of each route. Requests from users without sufficient clearance are rejected with a 403 Forbidden response.
+P222 [align=JUSTIFY (3)]: AI Assistant Module
+P223 [align=JUSTIFY (3)]: The AI Forensic Assistant is a floating chat widget in the dashboard. Queries are first matched against the evidence database using a live MongoDB regex search, returning evidence titles, original filenames and SHA-256 hashes. For general or legal compliance questions, the Google Gemini API can be used as an optional LLM backend.
+P225 [align=LEFT (0)]: Design Decisions and Justification MERN Stack
+P226 [align=None]: The MERN stack allows JavaScript to be used in the frontend, backend and database layers,
+P227 [align=None]: which speeds up development and keeps data structures consistent through JSON.
+P228 [align=LEFT (0)]: Node.js Native Crypto Module
+P229 [align=None]: The native crypto module was used instead of third-party cryptography libraries to reduce dependencies and rely on a well-reviewed implementation of AES and SHA-256.
+P230 [align=LEFT (0)]: Envelope Encryption
+P231 [align=None]: Using a separate DEK for each file limits the impact of a key compromise and allows keys to be managed independently of large files.
+P232 [align=LEFT (0)]: JWT with Refresh Token Rotation
+P233 [align=None]: Short-lived access tokens limit the exposure of stolen tokens, while rotating refresh tokens allow sessions to continue securely.
+P234 [align=None]: Live Regex Search with Optional LLM
+P235 [align=JUSTIFY (3)]: A direct MongoDB regex search provides fast results from the actual evidence records without depending on an external service, while Gemini integration adds conversational capability when available.
+P236 [align=None]: Glassmorphic Dark-Mode Interface
+P237 [align=JUSTIFY (3)]: A consistent design with CSS design tokens gives a modern, readable interface, and password visibility toggles improve usability during login and registration.
+P238 [align=LEFT (0)]: Methodology
+P239 [align=JUSTIFY (3)]: The project followed a systematic development methodology consisting of the following stages:
+P240 [align=None]: Phase 1 – Requirement Identification
+P241 [align=JUSTIFY (3)]: Evidence handling problems, security requirements and user roles were analyzed to determine the functional and non-functional requirements.
+P242 [align=None]: Phase 2 – System Design
+P243 [align=JUSTIFY (3)]: The architecture, database schemas (User, Evidence, Case, AuditLog), API structure and encryption flow were designed.
+P244 [align=None]: Phase 3 – Module Development
+P245 [align=None]: Authentication, email service, cryptographic engine, audit logger, AI assistant and frontend dashboard were implemented individually.
+P246 [align=None]: Phase 4 – Integration
+P247 [align=JUSTIFY (3)]: The frontend, backend, database and external services were connected to form a complete working system.
+P248 [align=None]: Phase 5 – Testing
+P249 [align=JUSTIFY (3)]: Functional test cases for registration, upload, download, AI search and password reset were executed using the web interface, cURL and Node.js test scripts.
+P251 [align=LEFT (0)]: Phase 6 – Debugging and Improvement
+P252 [align=JUSTIFY (3)]: Problems found during testing were analyzed and corrected, and the system was retested after each change.
+P253 [align=LEFT (0)]: Phase 7 – Final Verification
+P254 [align=JUSTIFY (3)]: The complete system was verified in the local environment, with the backend on port 5002 and the frontend on port 5174.
+P255 [align=LEFT (0)]: CO Alignment: CO2 – Solution analysis, design and technical justification.
+P257 [align=JUSTIFY (3)]: IMPLEMENTATION AND TECHNICAL EXECUTION
+P258 [align=JUSTIFY (3)]: Development Environment
+P259 [align=JUSTIFY (3)]: The CivicEvidence system was developed and tested in a local development environment. The main technologies were Node.js, Express.js, MongoDB with Mongoose, React 18 with Vite, the Node.js crypto module, JWT, bcryptjs, Nodemailer and the Google Gemini API. cURL and Node.js scripts were used for API testing.
+P260 [align=JUSTIFY (3)]: Node.js and Express.js were used for the REST API and middleware. MongoDB stored users, evidence metadata, cases and audit logs. The encrypted evidence files were stored on local disk in the backend/uploads/ directory. React 18 and Vite were used to build the single page application, and custom CSS design tokens were used for the glassmorphic styling.
+P261 [align=JUSTIFY (3)]: The backend server runs on port 5002 and the frontend development server runs on port 5174. Using a local environment provided a controlled setup for development and repeated testing.
+P262 [align=JUSTIFY (3)]: Implementation Details
+P263 [align=JUSTIFY (3)]: Server Entry Point
+P264 [align=JUSTIFY (3)]: The Express server was configured with Helmet for secure HTTP headers, CORS for controlled cross-origin access and express-rate-limit to limit repeated requests. Routes for authentication, evidence, cases, audit logs and the AI assistant were registered in the server entry file.
+P265 [align=JUSTIFY (3)]: Authentication and 2FA OTP
+P266 [align=JUSTIFY (3)]: The authentication controller implements registration, login, password complexity validation and OTP verification. Passwords are hashed with bcryptjs. After successful login, JWT access and refresh tokens are issued, and refresh tokens are rotated on use. Password reset uses a six-digit OTP sent by email; successful verification also marks the account email as verified.
+P267 [align=JUSTIFY (3)]: Email Service
+P268 [align=JUSTIFY (3)]: A central Nodemailer transporter using Gmail SMTP with an app password was configured to send OTP and password reset emails. This service is used by the authentication controller whenever an OTP must be dispatched.
+P269 [align=JUSTIFY (3)]: Cryptographic Engine
+P270 [align=JUSTIFY (3)]: The evidence controller uses the native crypto module. On upload, it computes the SHA-256 hash of the file, generates a DEK and IV, encrypts the content with AES-256-GCM, wraps the DEK with the Master Key and stores the encrypted file and its metadata. On download, the process is reversed and the hash is recomputed and compared with the stored value to confirm integrity.
+P272 [align=JUSTIFY (3)]: Audit Logger
+P273 [align=JUSTIFY (3)]: The audit logger utility extracts the user ID, IP address, user-agent, action and target from the request context and stores an audit record in MongoDB for each relevant operation. It is called from the controllers so that the Chain of Custody is built automatically.
+P274 [align=JUSTIFY (3)]: RBAC Middleware
+P275 [align=JUSTIFY (3)]: The role clearance guard verifies the JWT and checks the user’s role (Admin, Officer, Investigator or User) against the route policy before the controller is executed.
+P276 [align=JUSTIFY (3)]: AI Assistant Engine
+P277 [align=JUSTIFY (3)]: The AI controller receives the user’s prompt, performs a live MongoDB regex search against evidence records and returns matching titles, original filenames and SHA-256 hashes. For other questions it can call the Google Gemini API. The response is returned as Markdown with live statistics.
+P278 [align=JUSTIFY (3)]: Frontend Dashboard and AI Chat Widget
+P279 [align=JUSTIFY (3)]: The React 18 dashboard was built with Vite and React Router v6. The AiChatAssistant component provides a floating glassmorphic chat widget. Login and registration forms include interactive eye toggles for password visibility.
+P280 [align=JUSTIFY (3)]: Debugging and Troubleshooting
+P281 [align=JUSTIFY (3)]: Debugging was performed throughout implementation. The general approach involved identifying the observed problem, examining the relevant controller or component, testing the API with cURL, correcting the issue and repeating the test to verify the fix.
+P282 [align=JUSTIFY (3)]: Individual Contribution
+P283 [align=JUSTIFY (3)]: Table 5 presents the major tasks performed during development of the CivicEvidence system and the individual contribution to each module, together with the tools used and the file in which the output can be found.
+P284 [align=None]: TABLE 5
+P285 [align=CENTER (1)]: TASKS AND CONTRIBUTIONS[1],[3],[4],[5]
+P289 [align=JUSTIFY (3)]: The individual contribution covered the major stages of the project, including design, implementation, integration, testing, debugging and documentation.
+P290 [align=JUSTIFY (3)]: Integration and Collaboration
+P291 [align=JUSTIFY (3)]: The components were integrated to form a single working system. The React dashboard acts as the user interface, the Express API processes requests, the cryptographic engine and audit logger protect and record evidence handling, MongoDB stores metadata and logs, and Nodemailer and the Gemini API provide external services.
+P292 [align=JUSTIFY (3)]: Integration testing was performed after each module was developed. Frontend actions were tested against backend endpoints, and the encryption, hashing and audit behaviour was verified end to end. During the internship, project progress and technical issues were discussed with the mentor, and feedback was used to improve the system.
+P293 [align=JUSTIFY (3)]: Technical Execution Workflow
+P294 [align=JUSTIFY (3)]: The overall implementation workflow followed the sequence:
+P295 [align=CENTER (1)]: Requirement Analysis → Database Schema Design → Backend API and Authentication → Cryptographic Engine and Audit Logger → AI Assistant Engine → React Dashboard → Testing
+P296 [align=CENTER (1)]: → Debugging → Integration → Final Verification
+P297 [align=JUSTIFY (3)]: Each stage was performed progressively with testing throughout development. The completed system was verified locally with the backend on port 5002 and the frontend on port 5174.
+P298 [align=JUSTIFY (3)]: CO Alignment: CO3 – Build and deploy solutions for the target platform.
+P300 [align=JUSTIFY (3)]: TESTING, RESULTS AND DEPLOYMENT
+P301 [align=JUSTIFY (3)]: Testing Strategy
+P302 [align=JUSTIFY (3)]: The test cases were defined to verify the functional correctness and security behaviour of the CivicEvidence system. The tests covered registration validation, evidence upload and encryption, download with integrity verification, AI assistant search and password reset using OTP. Each test compares the expected result with the actual behaviour.
+P303 [align=None]: TABLE 6
+P304 [align=CENTER (1)]: TEST CASES AND VALIDATION[1],[3],[4],[5]
+P310 [align=JUSTIFY (3)]: The test results confirmed that the major functions of the system worked as expected in the local environment.
+P311 [align=JUSTIFY (3)]: Results and Performance
+P312 [align=JUSTIFY (3)]: The system successfully encrypted and stored evidence, verified integrity on retrieval, recorded audit entries and returned AI search results quickly from the database. Weak passwords were rejected, OTP-based password reset worked and role-based access restricted protected routes.
+P313 [align=JUSTIFY (3)]: Testing also helped identify and resolve issues related to proxy CORS errors, Mongoose populate errors, frontend icon import crashes and the email verification flag after password reset. Overall, testing confirmed the successful implementation of the major functional components.
+P314 [align=JUSTIFY (3)]: Deployment
+P315 [align=JUSTIFY (3)]: The system was deployed and tested in a local environment. The backend server runs on port 5002 and the frontend runs on port 5174. Encrypted evidence files are stored in backend/uploads/, metadata is stored in MongoDB and OTP emails are sent through the configured Gmail SMTP service. The deployment process included starting MongoDB, starting the backend, starting the frontend, logging in, uploading and downloading evidence, and verifying the audit trail and AI assistant.
+P316 [align=LEFT (0)]: Limitations
+P317 [align=LEFT (0)]: The system is currently deployed only in a local environment.
+P318 [align=LEFT (0)]: Evidence files are stored on local disk rather than on cloud object storage.
+P319 [align=LEFT (0)]: The Master Key is managed by the application rather than by a dedicated key management service.
+P320 [align=LEFT (0)]: AI responses from the LLM depend on the availability of the external Gemini API.
+P322 [align=LEFT (0)]: Large-scale performance testing was not part of the current scope.
+P324 [align=LEFT (0)]: Future Enhancements
+P325 [align=LEFT (0)]: Cloud deployment with managed storage and a key management service for the Master Key.
+P326 [align=LEFT (0)]: Multi-factor authentication options beyond email OTP.
+P327 [align=LEFT (0)]: Digital signatures and timestamping for stronger non-repudiation.
+P328 [align=LEFT (0)]: Advanced analytics and reporting dashboards for investigators.
+P329 [align=LEFT (0)]: Support for additional file previews and forensic file types.
+P330 [align=LEFT (0)]: CO Alignment: CO3 – Build, test and deploy solutions.
+P332 [align=LEFT (0)]: INDUSTRY / PROFESSIONAL LEARNING
+P333 [align=JUSTIFY (3)]: Technical Skills Acquired
+P334 [align=JUSTIFY (3)]: The internship provided hands-on proficiency in applied cryptography (AES-256, SHA-256), Node.js native crypto APIs, JWT authentication, MERN full-stack development, Express rate limiting, Nodemailer email services and Google Gemini API integration. Practical exposure was also gained in role-based access control, audit logging and secure API design.
+P335 [align=JUSTIFY (3)]: Problem-Solving and Decision-Making
+P336 [align=JUSTIFY (3)]: During development and testing, several technical issues were identified and resolved through systematic analysis:
+P337 [align=LEFT (0)]: Proxy CORS Errors: The CORS configuration and proxy settings were analyzed and corrected so that the frontend could communicate with the backend.
+P338 [align=LEFT (0)]: Mongoose Populate Errors: The model references and query logic were examined and corrected.
+P339 [align=LEFT (0)]: Vite React Icon Import Crashes: Incorrect icon imports were identified and fixed so that the interface rendered correctly.
+P340 [align=LEFT (0)]: Email Verification Flag: The password reset flow was updated so that the email verification flag is set automatically after successful OTP verification.
+P341 [align=None]: These activities improved problem-solving skills and showed the importance of testing individual components before integrating them.
+P342 [align=JUSTIFY (3)]: Teamwork and Professional Practices
+P343 [align=JUSTIFY (3)]: The project was carried out under mentor guidance with regular discussions on progress, technical challenges and implementation decisions. Industrial software engineering workflows such as version control, modular code separation and threat modelling were followed, and feedback was used to improve the system.
+P344 [align=JUSTIFY (3)]: Industry Insights
+P345 [align=JUSTIFY (3)]: The internship provided an understanding of the difference between academic learning and practical software development. Real-world projects, especially in security, require careful threat modelling, continuous testing, documentation and iterative improvement. Security cannot be added at the end; it must be designed into the architecture from the beginning.
+P347 [align=JUSTIFY (3)]: INTERNSHIP ACTIVITY LOG
+P348 [align=None]: The following table presents the weekly progress of the CivicEvidence system developed during the internship. It summarizes the activities performed each week, the technical learning,
+P350 [align=None]: and the outcomes achieved, showing the progression from requirement analysis to a fully functional platform.
+P351 [align=None]: TABLE 7
+P352 [align=CENTER (1)]: WEEKLY INTERNSHIP PROGRESS[1],[3],[4],[5]
+P355 [align=LEFT (0)]: EVIDENCE OF INTERNSHIP WORK
+P357 [align=CENTER (1)]: Figure 9.1.1 – The Project Environment[1],[3],[4]
+P361 [align=CENTER (1)]: Figure 9.1.2 – The Backend and Frontend Servers Running[3],[4]
+P362 [align=LEFT (0)]: Description:
+P363 [align=JUSTIFY (3)]: Project files, source code and the development environment used to develop and test the CivicEvidence system. The evidence shows the backend and frontend project structure, the controllers, services and components developed, and the servers running locally.
+P364 [align=LEFT (0)]: Related CO:
+P365 [align=None]: CO1
+P366 [align=LEFT (0)]: What it Demonstrates:
+P367 [align=JUSTIFY (3)]: Demonstrates practical exposure to full-stack MERN development, Node.js server execution, modular project structure and industry-relevant development tools.
+P371 [align=CENTER (1)]: Figure 9.2 – Architecture Diagram of the CivicEvidence DEMS[1],[2]
+P372 [align=LEFT (0)]: Description:
+P373 [align=JUSTIFY (3)]: System architecture diagram showing the interaction between the browser, React frontend, Express API with security middleware, cryptographic engine, audit logger, MongoDB, Nodemailer and the AI assistant.
+P374 [align=LEFT (0)]: Related CO:
+P375 [align=None]: CO2
+P376 [align=LEFT (0)]: What it Demonstrates:
+P377 [align=JUSTIFY (3)]: Demonstrates understanding of the overall system architecture and the ability to translate security requirements into a layered design with encryption, access control and auditing.
+P380 [align=CENTER (1)]: Figure 9.3.1 – Login Interface[4]
+P382 [align=CENTER (1)]: Figure 9.3.2 – Evidence Dashboard[3],[4]
+P383 [align=LEFT (0)]: Description:
+P384 [align=JUSTIFY (3)]: Screens of the login interface and the administration dashboard, showing evidence file, active case, system user and encrypted storage statistics, upload trends, evidence by type and the system Chain of Custody feed.
+P385 [align=None]: Related CO:
+P386 [align=None]: CO3
+P388 [align=None]: What it Demonstrates:
+P389 [align=JUSTIFY (3)]: Demonstrates implementation, execution and deployment of the secure evidence management interface including authentication, role-based dashboards and monitoring of evidence and case activity.
+P391 [align=CENTER (1)]: Figure 9.4.1 – Chain of Custody Audit Log[1],[2]
+P393 [align=CENTER (1)]: Figure 9.4.2 – AI Forensic Assistant[5]
+P394 [align=LEFT (0)]: Description:
+P395 [align=None]: Audit log records showing user, IP address, user-agent, action and timestamp, and the AI assistant returning evidence titles, filenames and SHA-256 hashes for a query.
+P397 [align=LEFT (0)]: Related CO:
+P398 [align=None]: CO4
+P399 [align=LEFT (0)]: What it Demonstrates:
+P400 [align=None]: Demonstrates monitoring, result interpretation, technical documentation and communication of project work, as well as the practical use of audit data and AI-assisted search.
+P401 [align=LEFT (0)]: Figure citation:
+P404 [align=LEFT (0)]: COURSE OUTCOME ATTAINMENT EVIDENCE
+P405 [align=JUSTIFY (3)]: The following table presents the mapping of the course outcomes with the activities and technical work carried out during development of the CivicEvidence system. It identifies how the internship activities contributed to each course outcome and gives the corresponding artifact references from the report.
+P406 [align=None]: TABLE 8
+P407 [align=CENTER (1)]: COURSE OUTCOME MAPPING[1]-[5]
+P410 [align=LEFT (0)]: CONCLUSION
+P411 [align=JUSTIFY (3)]: The Summer Internship at CLOUDSTRAND PRIVATE LIMITED, Chennai provided valuable technical and industry exposure in software engineering and cybersecurity. The internship helped in understanding how academic concepts can be applied to real-world security requirements.
+P412 [align=JUSTIFY (3)]: The developed project, CivicEvidence DEMS, addresses the vulnerabilities of traditional evidence storage by combining SHA-256 integrity verification, AES-256-GCM envelope encryption, an ISO 27037 aligned Chain of Custody audit trail, role-based access control, two-factor email OTP and an AI-based forensic search assistant. The project provided practical experience in requirement analysis, system design, implementation, integration, testing, debugging and local deployment.
+P413 [align=JUSTIFY (3)]: The internship strengthened skills in full-stack web development, applied cryptography, secure API design, database handling and documentation. Working through implementation issues improved problem-solving and debugging abilities, and the overall experience provided a better understanding of systematic and secure software development practices.
+P415 [align=LEFT (0)]: REFERENCES / RESOURCES
+P416 [align=LEFT (0)]: ISO/IEC 27037:2012 – Guidelines for identification, collection, acquisition and preservation of digital evidence.
+P417 [align=LEFT (0)]: NIST SP 800-86 – Guide to Integrating Forensic Techniques into Incident Response.
+P418 [align=LEFT (0)]: Node.js Crypto Documentation – https://nodejs.org/api/crypto.html
+P419 [align=LEFT (0)]: React 18 and Vite Documentation – https://vitejs.dev/
+P420 [align=LEFT (0)]: Google Gemini API Documentation – https://ai.google.dev/
+P421 [align=LEFT (0)]: MongoDB and Mongoose Documentation – database design, schemas and queries.
+P422 [align=LEFT (0)]: Express.js, Helmet, express-rate-limit and Nodemailer Documentation – middleware, API security and email transport.
+P423 [align=LEFT (0)]: RFC 7519 – JSON Web Token (JWT).
+P424 [align=LEFT (0)]: NIST FIPS 197 (AES), FIPS 180-4 (SHA-256) and SP 800-38D (GCM mode) –
+P425 [align=JUSTIFY (3)]: cryptographic standards.
+P427 [align=JUSTIFY (3)]: APPENDIX A – SELECTED CODE / TECHNICAL ARTIFACTS
+P428 [align=JUSTIFY (3)]: backend/controllers/evidenceController.js – evidence listing, upload with encryption, download with integrity verification, versioning, soft delete and rollback. Encryption and storage are performed through services/encryptionService.js and services/storageService.js, and every action is recorded through utils/auditLogger.js.
+P429 [align=LEFT (0)]: const Evidence = require('../models/Evidence'); const Case = require('../models/Case');
+P430 [align=LEFT (0)]: const Permission = require('../models/Permission');
+P431 [align=LEFT (0)]: const EvidenceVersion = require('../models/EvidenceVersion'); const encryptionService = require('../services/encryptionService'); const storageService = require('../services/storageService'); const logAudit = require('../utils/auditLogger');
+P432 [align=LEFT (0)]: const mongoose = require('mongoose');
+P434 [align=LEFT (0)]: const checkUserAccess = async (user, evidenceId, requiredPermission = 'read') => { if (user.role === 'admin' || user.role === 'officer') {
+P435 [align=LEFT (0)]: return true;
+P436 [align=LEFT (0)]: }
+P438 [align=LEFT (0)]: const evidence = await Evidence.findById(evidenceId); if (!evidence) return false;
+P439 [align=LEFT (0)]: if (evidence.uploadedBy.toString() === user._id.toString()) return true;
+P441 [align=LEFT (0)]: const activePermission = await Permission.findOne({ evidenceId,
+P442 [align=LEFT (0)]: sharedWith: user._id, expiresAt: { $gt: new Date() },
+P443 [align=LEFT (0)]: });
+P445 [align=LEFT (0)]: if (!activePermission) return false;
+P447 [align=LEFT (0)]: if (requiredPermission === 'download') {
+P448 [align=LEFT (0)]: return activePermission.permission === 'download' || activePermission.permission === 'edit_metadata';
+P449 [align=LEFT (0)]: }
+P451 [align=LEFT (0)]: return true;
+P452 [align=LEFT (0)]: };
+P454 [align=LEFT (0)]: const getEvidenceList = async (req, res) => { try {
+P455 [align=LEFT (0)]: const { search, caseId, category, fileType, tag, sort, page = 1, limit = 10, includeDeleted = 'false' } = req.query;
+P457 [align=LEFT (0)]: const query = {};
+P459 [align=LEFT (0)]: if (includeDeleted === 'true' && req.user.role === 'admin') { query.isDeleted = true;
+P460 [align=LEFT (0)]: } else {
+P461 [align=LEFT (0)]: query.isDeleted = false;
+P462 [align=LEFT (0)]: }
+P464 [align=LEFT (0)]: if (req.user.role === 'user') {
+P465 [align=LEFT (0)]: const sharedPermissions = await Permission.find({
+P467 [align=LEFT (0)]: sharedWith: req.user._id, expiresAt: { $gt: new Date() },
+P468 [align=LEFT (0)]: }).select('evidenceId');
+P470 [align=LEFT (0)]: const sharedIds = sharedPermissions.map((p) => p.evidenceId);
+P472 [align=LEFT (0)]: query.$or = [
+P473 [align=LEFT (0)]: { uploadedBy: req.user._id },
+P474 [align=LEFT (0)]: { _id: { $in: sharedIds } },
+P475 [align=LEFT (0)]: ];
+P476 [align=LEFT (0)]: }
+P478 [align=LEFT (0)]: if (search) {
+P479 [align=LEFT (0)]: query.$and = query.$and || []; query.$and.push({
+P480 [align=LEFT (0)]: $or: [
+P481 [align=LEFT (0)]: { title: { $regex: search, $options: 'i' } },
+P482 [align=LEFT (0)]: { description: { $regex: search, $options: 'i' } },
+P483 [align=LEFT (0)]: { originalFilename: { $regex: search, $options: 'i' } },
+P484 [align=LEFT (0)]: ],
+P485 [align=LEFT (0)]: });
+P486 [align=LEFT (0)]: }
+P488 [align=LEFT (0)]: if (caseId) { query.caseId = caseId;
+P489 [align=LEFT (0)]: }
+P490 [align=LEFT (0)]: if (category) { query.category = category;
+P491 [align=LEFT (0)]: }
+P492 [align=LEFT (0)]: if (fileType) {
+P493 [align=LEFT (0)]: query.fileType = { $regex: fileType, $options: 'i' };
+P494 [align=LEFT (0)]: }
+P495 [align=LEFT (0)]: if (tag) { query.tags = tag;
+P496 [align=LEFT (0)]: }
+P498 [align=LEFT (0)]: let sortObj = { createdAt: -1 }; if (sort === 'oldest') {
+P499 [align=LEFT (0)]: sortObj = { createdAt: 1 };
+P500 [align=LEFT (0)]: } else if (sort === 'name') { sortObj = { title: 1 };
+P501 [align=LEFT (0)]: } else if (sort === 'size') { sortObj = { fileSize: -1 };
+P502 [align=LEFT (0)]: }
+P504 [align=LEFT (0)]: const skip = (page - 1) * limit;
+P505 [align=LEFT (0)]: const total = await Evidence.countDocuments(query); const evidence = await Evidence.find(query)
+P506 [align=LEFT (0)]: .populate('uploadedBy', 'name email role')
+P507 [align=LEFT (0)]: .populate('caseId', 'caseNumber title')
+P508 [align=LEFT (0)]: .sort(sortObj)
+P509 [align=LEFT (0)]: .skip(skip)
+P510 [align=LEFT (0)]: .limit(Number(limit));
+P512 [align=LEFT (0)]: res.json({ evidence,
+P514 [align=LEFT (0)]: page: Number(page),
+P515 [align=LEFT (0)]: pages: Math.ceil(total / limit), total,
+P516 [align=LEFT (0)]: });
+P517 [align=LEFT (0)]: } catch (error) {
+P518 [align=LEFT (0)]: res.status(500).json({ message: error.message });
+P519 [align=LEFT (0)]: }
+P520 [align=LEFT (0)]: };
+P522 [align=LEFT (0)]: const getEvidenceById = async (req, res) => { try {
+P523 [align=LEFT (0)]: const evidence = await Evidence.findById(req.params.id)
+P524 [align=LEFT (0)]: .populate('uploadedBy', 'name email role')
+P525 [align=LEFT (0)]: .populate('caseId', 'caseNumber title status assignedOfficer');
+P527 [align=LEFT (0)]: if (!evidence || (evidence.isDeleted && req.user.role !== 'admin')) { return res.status(404).json({ message: 'Evidence not found.' });
+P528 [align=LEFT (0)]: }
+P530 [align=LEFT (0)]: const hasAccess = await checkUserAccess(req.user, evidence._id, 'read'); if (!hasAccess) {
+P531 [align=LEFT (0)]: await logAudit(req, { action: 'VIEW_DENIED',
+P532 [align=LEFT (0)]: target: evidence._id.toString(),
+P533 [align=LEFT (0)]: details: 'Attempted to view evidence without permission', status: 'failure',
+P534 [align=LEFT (0)]: });
+P535 [align=LEFT (0)]: return res.status(403).json({ message: 'Access denied: You do not have permissions to view this evidence.' });
+P536 [align=LEFT (0)]: }
+P538 [align=LEFT (0)]: const versions = await EvidenceVersion.find({ evidenceId: evidence._id })
+P539 [align=LEFT (0)]: .populate('updatedBy', 'name email role')
+P540 [align=LEFT (0)]: .sort({ version: -1 });
+P542 [align=LEFT (0)]: await logAudit(req, { action: 'VIEW',
+P543 [align=LEFT (0)]: target: evidence._id.toString(),
+P544 [align=LEFT (0)]: details: `Viewed metadata of: "${evidence.title}"`,
+P545 [align=LEFT (0)]: });
+P547 [align=LEFT (0)]: res.json({ evidence, versions });
+P548 [align=LEFT (0)]: } catch (error) {
+P549 [align=LEFT (0)]: res.status(500).json({ message: error.message });
+P550 [align=LEFT (0)]: }
+P551 [align=LEFT (0)]: };
+P553 [align=LEFT (0)]: const uploadEvidence = async (req, res) => { try {
+P554 [align=LEFT (0)]: if (!req.file) {
+P555 [align=LEFT (0)]: return res.status(400).json({ message: 'Please upload a file.' });
+P556 [align=LEFT (0)]: }
+P558 [align=LEFT (0)]: const { title, description, caseId, tags, category } = req.body; if (!title) {
+P560 [align=LEFT (0)]: return res.status(400).json({ message: 'Evidence title is required.' });
+P561 [align=LEFT (0)]: }
+P563 [align=LEFT (0)]: if (caseId) {
+P564 [align=LEFT (0)]: const parentCase = await Case.findById(caseId); if (!parentCase) {
+P565 [align=LEFT (0)]: return res.status(404).json({ message: 'Assigned case not found.' });
+P566 [align=LEFT (0)]: }
+P567 [align=LEFT (0)]: }
+P569 [align=LEFT (0)]: const fileBuffer = req.file.buffer;
+P570 [align=LEFT (0)]: const { encryptedBuffer, fileKeyEncrypted, fileIvHex, hash } = encryptionService.encryptFile(fileBuffer);
+P572 [align=LEFT (0)]: const encryptedFileURL = await storageService.uploadFile(encryptedBuffer, req.file.originalname);
+P574 [align=LEFT (0)]: const parsedTags = tags ? (Array.isArray(tags) ? tags : tags.split(',').map((t)
+P575 [align=LEFT (0)]: => t.trim())) : [];
+P577 [align=LEFT (0)]: const evidence = await Evidence.create({ title,
+P578 [align=LEFT (0)]: description,
+P579 [align=LEFT (0)]: caseId: caseId || undefined, uploadedBy: req.user._id, encryptedFileURL,
+P580 [align=LEFT (0)]: originalFilename: req.file.originalname, fileType: req.file.mimetype,
+P581 [align=LEFT (0)]: fileSize: req.file.size, hash,
+P582 [align=LEFT (0)]: tags: parsedTags,
+P583 [align=LEFT (0)]: category: category || 'General', fileKeyEncrypted,
+P584 [align=LEFT (0)]: fileIvHex,
+P585 [align=LEFT (0)]: });
+P587 [align=LEFT (0)]: await logAudit(req, { action: 'UPLOAD',
+P588 [align=LEFT (0)]: target: evidence._id.toString(),
+P589 [align=LEFT (0)]: details: `Uploaded evidence "${title}" (${req.file.originalname}). Hash: $
+P590 [align=LEFT (0)]: {hash}`,
+P591 [align=LEFT (0)]: });
+P593 [align=LEFT (0)]: res.status(201).json(evidence);
+P594 [align=LEFT (0)]: } catch (error) {
+P595 [align=LEFT (0)]: res.status(500).json({ message: error.message });
+P596 [align=LEFT (0)]: }
+P597 [align=LEFT (0)]: };
+P599 [align=LEFT (0)]: const downloadEvidence = async (req, res) => { try {
+P600 [align=LEFT (0)]: const evidence = await Evidence.findById(req.params.id); if (!evidence || evidence.isDeleted) {
+P601 [align=LEFT (0)]: return res.status(404).json({ message: 'Evidence not found.' });
+P602 [align=LEFT (0)]: }
+P604 [align=LEFT (0)]: const hasAccess = await checkUserAccess(req.user, evidence._id, 'download'); if (!hasAccess) {
+P605 [align=LEFT (0)]: await logAudit(req, { action: 'DOWNLOAD_DENIED',
+P606 [align=LEFT (0)]: target: evidence._id.toString(),
+P607 [align=LEFT (0)]: details: 'Attempted to download evidence without permission', status: 'failure',
+P608 [align=LEFT (0)]: });
+P609 [align=LEFT (0)]: return res.status(403).json({ message: 'Access denied: You do not have permissions to download this file.' });
+P610 [align=LEFT (0)]: }
+P612 [align=LEFT (0)]: const encryptedBuffer = await storageService.downloadFile(evidence.encryptedFileURL);
+P614 [align=LEFT (0)]: const decryptedBuffer = encryptionService.decryptFile( encryptedBuffer,
+P615 [align=LEFT (0)]: evidence.fileKeyEncrypted, evidence.fileIvHex
+P616 [align=LEFT (0)]: );
+P618 [align=LEFT (0)]: const decryptedHash = encryptionService.calculateHash(decryptedBuffer); if (decryptedHash !== evidence.hash) {
+P619 [align=LEFT (0)]: await logAudit(req, { action: 'INTEGRITY_FAIL',
+P620 [align=LEFT (0)]: target: evidence._id.toString(),
+P621 [align=LEFT (0)]: details: 'Downloaded file hash mismatch! Integrity breached.', status: 'failure',
+P622 [align=LEFT (0)]: });
+P623 [align=LEFT (0)]: return res.status(500).json({ message: 'File integrity check failed: Decrypted file hash mismatch.' });
+P624 [align=LEFT (0)]: }
+P626 [align=LEFT (0)]: await logAudit(req, { action: 'DOWNLOAD',
+P627 [align=LEFT (0)]: target: evidence._id.toString(),
+P628 [align=LEFT (0)]: details: `Downloaded evidence file: "${evidence.originalFilename}"`,
+P629 [align=LEFT (0)]: });
+P631 [align=LEFT (0)]: res.setHeader('Content-Disposition', `attachment; filename="$
+P632 [align=LEFT (0)]: {evidence.originalFilename}"`); res.setHeader('Content-Type', evidence.fileType); res.send(decryptedBuffer);
+P633 [align=LEFT (0)]: } catch (error) {
+P634 [align=LEFT (0)]: res.status(500).json({ message: error.message });
+P635 [align=LEFT (0)]: }
+P636 [align=LEFT (0)]: };
+P638 [align=LEFT (0)]: const updateEvidence = async (req, res) => { try {
+P639 [align=LEFT (0)]: const evidence = await Evidence.findById(req.params.id); if (!evidence || evidence.isDeleted) {
+P640 [align=LEFT (0)]: return res.status(404).json({ message: 'Evidence not found.' });
+P641 [align=LEFT (0)]: }
+P643 [align=LEFT (0)]: const isOwner = evidence.uploadedBy.toString() === req.user._id.toString();
+P645 [align=LEFT (0)]: const canEdit = isOwner || req.user.role === 'admin' || req.user.role === 'officer';
+P647 [align=LEFT (0)]: if (!canEdit) {
+P648 [align=LEFT (0)]: return res.status(403).json({ message: 'Access denied: You are not authorized to update this evidence.' });
+P649 [align=LEFT (0)]: }
+P650 [align=LEFT (0)]: const { title, description, caseId, tags, category, changeNotes } = req.body; if (caseId && caseId !== (evidence.caseId ? evidence.caseId.toString() : '')) {
+P651 [align=LEFT (0)]: const parentCase = await Case.findById(caseId); if (!parentCase) {
+P652 [align=LEFT (0)]: return res.status(404).json({ message: 'Assigned case not found.' });
+P653 [align=LEFT (0)]: }
+P654 [align=LEFT (0)]: evidence.caseId = caseId;
+P655 [align=LEFT (0)]: }
+P657 [align=LEFT (0)]: if (title) evidence.title = title;
+P658 [align=LEFT (0)]: if (description !== undefined) evidence.description = description; if (category) evidence.category = category;
+P659 [align=LEFT (0)]: if (tags) {
+P660 [align=LEFT (0)]: evidence.tags = Array.isArray(tags) ? tags : tags.split(',').map((t) => t.trim());
+P661 [align=LEFT (0)]: }
+P663 [align=LEFT (0)]: if (req.file) {
+P664 [align=LEFT (0)]: const currentVersionCount = await EvidenceVersion.countDocuments({ evidenceId: evidence._id });
+P665 [align=LEFT (0)]: const nextVersionNumber = currentVersionCount + 1;
+P667 [align=LEFT (0)]: await EvidenceVersion.create({ evidenceId: evidence._id, version: nextVersionNumber, updatedBy: req.user._id,
+P668 [align=JUSTIFY (3)]: changes: changeNotes || 'New file uploaded', encryptedFileURL: evidence.encryptedFileURL, fileSize: evidence.fileSize,
+P669 [align=JUSTIFY (3)]: hash: evidence.hash,
+P670 [align=JUSTIFY (3)]: fileKeyEncrypted: evidence.fileKeyEncrypted, fileIvHex: evidence.fileIvHex,
+P671 [align=LEFT (0)]: });
+P673 [align=LEFT (0)]: const { encryptedBuffer, fileKeyEncrypted, fileIvHex, hash } = encryptionService.encryptFile(req.file.buffer);
+P674 [align=LEFT (0)]: const newFileURL = await storageService.uploadFile(encryptedBuffer, req.file.originalname);
+P676 [align=LEFT (0)]: evidence.encryptedFileURL = newFileURL; evidence.originalFilename = req.file.originalname; evidence.fileType = req.file.mimetype; evidence.fileSize = req.file.size;
+P677 [align=LEFT (0)]: evidence.hash = hash; evidence.fileKeyEncrypted = fileKeyEncrypted; evidence.fileIvHex = fileIvHex;
+P679 [align=LEFT (0)]: await logAudit(req, { action: 'VERSION_UPDATE',
+P680 [align=LEFT (0)]: target: evidence._id.toString(),
+P681 [align=LEFT (0)]: details: `Uploaded new version (v${nextVersionNumber + 1}). Changes: $
+P682 [align=LEFT (0)]: {changeNotes || 'None'}. New Hash: ${hash}`,
+P683 [align=LEFT (0)]: });
+P684 [align=LEFT (0)]: } else {
+P685 [align=LEFT (0)]: await logAudit(req, { action: 'METADATA_UPDATE',
+P686 [align=LEFT (0)]: target: evidence._id.toString(),
+P687 [align=LEFT (0)]: details: `Updated metadata for "${evidence.title}"`,
+P688 [align=LEFT (0)]: });
+P689 [align=LEFT (0)]: }
+P691 [align=LEFT (0)]: await evidence.save(); res.json(evidence);
+P692 [align=LEFT (0)]: } catch (error) {
+P693 [align=LEFT (0)]: res.status(500).json({ message: error.message });
+P694 [align=LEFT (0)]: }
+P695 [align=LEFT (0)]: };
+P697 [align=LEFT (0)]: const deleteEvidence = async (req, res) => { try {
+P698 [align=LEFT (0)]: const evidence = await Evidence.findById(req.params.id); if (!evidence || evidence.isDeleted) {
+P699 [align=LEFT (0)]: return res.status(404).json({ message: 'Evidence not found.' });
+P700 [align=LEFT (0)]: }
+P702 [align=LEFT (0)]: const isOwner = evidence.uploadedBy.toString() === req.user._id.toString(); const canDelete = isOwner || req.user.role === 'admin';
+P704 [align=LEFT (0)]: if (!canDelete) {
+P705 [align=LEFT (0)]: return res.status(403).json({ message: 'Access denied: You are not authorized to delete this evidence.' });
+P706 [align=LEFT (0)]: }
+P708 [align=LEFT (0)]: evidence.isDeleted = true; await evidence.save();
+P710 [align=LEFT (0)]: await logAudit(req, { action: 'DELETE',
+P711 [align=LEFT (0)]: target: evidence._id.toString(),
+P712 [align=LEFT (0)]: details: `Soft-deleted evidence "${evidence.title}"`,
+P713 [align=LEFT (0)]: });
+P715 [align=LEFT (0)]: res.json({ message: 'Evidence soft-deleted successfully.' });
+P716 [align=LEFT (0)]: } catch (error) {
+P717 [align=LEFT (0)]: res.status(500).json({ message: error.message });
+P718 [align=LEFT (0)]: }
+P719 [align=LEFT (0)]: };
+P721 [align=LEFT (0)]: const restoreEvidence = async (req, res) => { try {
+P722 [align=LEFT (0)]: const evidence = await Evidence.findById(req.params.id); if (!evidence || !evidence.isDeleted) {
+P724 [align=LEFT (0)]: return res.status(404).json({ message: 'Evidence not found or is not deleted.' });
+P725 [align=LEFT (0)]: }
+P727 [align=LEFT (0)]: evidence.isDeleted = false; await evidence.save();
+P729 [align=LEFT (0)]: await logAudit(req, { action: 'RESTORE',
+P730 [align=LEFT (0)]: target: evidence._id.toString(),
+P731 [align=LEFT (0)]: details: `Restored soft-deleted evidence "${evidence.title}"`,
+P732 [align=LEFT (0)]: });
+P734 [align=LEFT (0)]: res.json({ message: 'Evidence restored successfully.' });
+P735 [align=LEFT (0)]: } catch (error) {
+P736 [align=LEFT (0)]: res.status(500).json({ message: error.message });
+P737 [align=LEFT (0)]: }
+P738 [align=LEFT (0)]: };
+P740 [align=LEFT (0)]: const rollbackEvidenceVersion = async (req, res) => { try {
+P741 [align=LEFT (0)]: const { versionId } = req.body; if (!versionId) {
+P742 [align=LEFT (0)]: return res.status(400).json({ message: 'Version ID is required for rollback.'
+P744 [align=LEFT (0)]: });
+P746 [align=LEFT (0)]: }
+P748 [align=LEFT (0)]: const evidence = await Evidence.findById(r eq.params.id); if (!evidence || evidence.isDeleted)
+P749 [align=LEFT (0)]: {
+P751 [align=LEFT (0)]: return res.status(404).json({ message: 'Evidence not found.' });
+P752 [align=LEFT (0)]: }
+P754 [align=LEFT (0)]: const targetVersion = await EvidenceVersion.findOne({
+P755 [align=LEFT (0)]: _id: versionId, evidenceId: evidence._id,
+P756 [align=LEFT (0)]: });
+P758 [align=LEFT (0)]: if (!targetVersion) {
+P759 [align=LEFT (0)]: return res.status(404).json({ message: 'Version record not found.' });
+P760 [align=LEFT (0)]: }
+P762 [align=LEFT (0)]: const currentVersionCount = await EvidenceVersion.countDocuments({ evidenceId: evidence._id });
+P763 [align=LEFT (0)]: const nextVersionNumber = currentVersionCount + 1;
+P765 [align=LEFT (0)]: await EvidenceVersion.create({ evidenceId: evidence._id, version: nextVersionNumber, updatedBy: req.user._id,
+P766 [align=LEFT (0)]: changes: `Rollback to version ${targetVersion.version}`, encryptedFileURL: evidence.encryptedFileURL,
+P767 [align=LEFT (0)]: fileSize: evidence.fileSize,
+P769 [align=LEFT (0)]: hash: evidence.hash,
+P770 [align=LEFT (0)]: fileKeyEncrypted: evidence.fileKeyEncrypted, fileIvHex: evidence.fileIvHex,
+P771 [align=LEFT (0)]: });
+P773 [align=LEFT (0)]: evidence.encryptedFileURL = targetVersion.encryptedFileURL; evidence.fileSize = targetVersion.fileSize;
+P774 [align=LEFT (0)]: evidence.hash = targetVersion.hash; evidence.fileKeyEncrypted = targetVersion.fileKeyEncrypted; evidence.fileIvHex = targetVersion.fileIvHex;
+P776 [align=LEFT (0)]: await evidence.save();
+P778 [align=LEFT (0)]: await logAudit(req, { action: 'ROLLBACK',
+P779 [align=LEFT (0)]: target: evidence._id.toString(),
+P780 [align=LEFT (0)]: details: `Rolled back to version ${targetVersion.version}. New version (v$
+P781 [align=LEFT (0)]: {nextVersionNumber + 1}) snapshot captured.`,
+P782 [align=LEFT (0)]: });
+P784 [align=LEFT (0)]: res.json({ message: `Successfully rolled back to version $
+P785 [align=LEFT (0)]: {targetVersion.version}.`, evidence });
+P786 [align=LEFT (0)]: } catch (error) {
+P787 [align=LEFT (0)]: res.status(500).json({ message: error.message });
+P788 [align=LEFT (0)]: }
+P789 [align=LEFT (0)]: };
+P791 [align=LEFT (0)]: module.exports = { getEvidenceList, getEvidenceById, uploadEvidence, downloadEvidence, updateEvidence, deleteEvidence, restoreEvidence, rollbackEvidenceVersion,
+P792 [align=LEFT (0)]: };
+P794 [align=None]: APPENDIX B – INTERNSHIP CERTIFICATE
+P798 [align=None]: APPENDIX C – INTERNSHIP PRESENTATION EVALUATION SCORE SHEET
+P799 [align=None]: Overall Marks	/ 100
+P800 [align=None]: Evaluator Name & Signature: 	Date:
+
+--- TABLE 0 (1x2) ---
+  Row 0: ['SIGNATURE FACULTY IN CHARGE Ms. Rajarajeswari P, Assistant Professor, Department of Computer Science and Engineering, Ramco Institute of Technology, Rajapalayam', 'SIGNATURE HEAD OF THE DEPARTMENT Dr. Vijayalakshmi K, Professor/Head, Department of Computer Science and Engineering, Ramco Institute of Technology, Rajapalayam']
+
+--- TABLE 1 (16x3) ---
+  Row 0: ['S.No', 'Topics', 'Page No']
+  Row 1: ['1', 'Organization and Industry Exposure', '6']
+  Row 2: ['2', 'Internship Objectives and Learning Targets', '8']
+  Row 3: ['3', 'Problem / Requirement Identification and Analysis', '8']
+  Row 4: ['4', 'Solution Design and Methodology', '11']
+  Row 5: ['5', 'Implementation and Technical Execution', '15']
+  Row 6: ['6', 'Testing, Results and Deployment', '17']
+  Row 7: ['7', 'Industry / Professional Learning', '19']
+  Row 8: ['8', 'Internship Activity Log', '19']
+  Row 9: ['9', 'Evidence of Internship Work', '20']
+  Row 10: ['10', 'Course Outcome Attainment Evidence', '25']
+  Row 11: ['11', 'Conclusion', '26']
+  Row 12: ['12', 'References / Resources', '26']
+  Row 13: ['', 'Appendix A – Selected Code / Technical Artifacts', '27']
+  Row 14: ['', 'Appendix B – Internship Certificate', '36']
+  Row 15: ['', 'Appendix C – Internship Presentation Evaluation Score Sheet', '37']
+
+--- TABLE 2 (5x4) ---
+  Row 0: ['Category', 'Tool / Technology', 'Purpose / Usage', 'Level of Exposure']
+  Row 1: ['Frontend Framework', 'React 18, Vite 5, React Router', 'Single Page Application (SPA) dashboard design', 'Advanced']
+  Row 2: ['Backend Runtime', 'Node.js, Express.js', 'RESTful API services and middleware processing', 'Advanced']
+  Row 3: ['Database', 'MongoDB, Mongoose ODM', 'Document database for evidence metadata and logs', 'Intermediate']
+  Row 4: ['Cryptography', 'Node.js native crypto module', 'AES-256 envelope encryption and SHA-256 hashing', 'Advanced']
+
+--- TABLE 3 (5x4) ---
+  Row 0: ['Category', 'Tool / Technology', 'Purpose / Usage', 'Level of Exposure']
+  Row 1: ['Authentication', 'JWT, bcryptjs, Nodemailer', 'Token security, password hashing, 2FA OTP mailer', 'Advanced']
+  Row 2: ['AI Integration', 'Google Gemini API (Gemini 1.5 Flash)', 'Conversational AI assistant and LLM query handling', 'Intermediate']
+  Row 3: ['Security Middleware', 'Helmet, CORS, express-rate- limit', 'HTTP header hardening and brute-force protection', 'Intermediate']
+  Row 4: ['Testing', 'cURL, Node.js test scripts', 'API and end-to-end functional testing', 'Intermediate']
+
+--- TABLE 4 (5x3) ---
+  Row 0: ['Objective', 'Expected Learning / Skill', 'Evidence from Internship']
+  Row 1: ['O1', 'Understand applied cryptography and secure evidence storage principles', 'Implemented AES-256 envelope encryption and SHA-256 integrity checksums in the backend']
+  Row 2: ['O2', 'Analyze and design role-based access control and audit log systems', 'Designed 4-tier RBAC middleware and an ISO 27037 compliant Chain of Custody audit logger']
+  Row 3: ['O3', 'Develop a full-stack MERN application with a real-time AI assistant', 'Built the React 18 dashboard and Node.js backend with the AI Forensic Assistant']
+  Row 4: ['O4', 'Improve technical documentation, system testing and deployment skills', 'Executed test cases, prepared the technical report and configured local deployment']
+
+--- TABLE 5 (5x3) ---
+  Row 0: ['Type', 'Requirement / Constraint', 'Priority / Impact']
+  Row 1: ['Functional', 'AES-256 envelope encryption, SHA-256 integrity checks, ISO 27037 audit logs', 'High']
+  Row 2: ['Non-functional', 'Sub-second AI search response, glassmorphic dark-mode UI, password visibility toggles', 'High']
+  Row 3: ['Technical', 'Node.js crypto, JWT authentication, MongoDB, Express, React 18, Vite', 'High']
+  Row 4: ['Operational', 'Local disk storage (backend/uploads/) and a central Gmail SMTP mailer for OTP emails', 'Medium']
+
+--- TABLE 6 (6x5) ---
+  Row 0: ['Module', 'Purpose', 'Inputs', 'Processing', 'Outputs']
+  Row 1: ['Authentication Module', 'Secure user access and 2FA OTP', 'Login credentials, OTP codes', 'bcrypt hashing, JWT generation, OTP verification', 'JWT token, auth state']
+  Row 2: ['Cryptographic Engine', 'File encryption and hash checking', 'Raw evidence file binary', 'SHA-256 hash calculation, AES-256-GCM encryption', 'Encrypted blob, DEK/IV, hash']
+  Row 3: ['Audit Logger Module', 'Chain of Custody recording', 'User request context', 'Extracts IP, user-agent, action, target', 'Immutable audit record']
+  Row 4: ['AI Assistant Module', 'Conversational search and statistics', 'Natural language prompt', 'Live MongoDB regex query / Gemini API call', 'Markdown response, live stats']
+  Row 5: ['Role Clearance Guard', 'Enforce 4-tier RBAC access', 'User token and role', 'Validates role against route policy', 'Access granted / 403 Forbidden']
+
+--- TABLE 7 (6x4) ---
+  Row 0: ['Task / Module', 'My Contribution', 'Tools / Technologies', 'Evidence / Output File']
+  Row 1: ['Server Entry Point', 'Configured Express server, Helmet, CORS and rate limiters', 'Node.js, Express, Helmet', 'backend/server.js']
+  Row 2: ['Auth and 2FA OTP', 'Implemented login, registration, password regex and OTP verification', 'bcryptjs, JWT, Nodemailer', 'backend/controllers/ authController.js']
+  Row 3: ['Email Service', 'Configured central Gmail SMTP transporter', 'Nodemailer, Gmail App Password', 'backend/services / emailService.js']
+  Row 4: ['Crypto Engine', 'Implemented SHA-256 checksums and AES-256-GCM envelope encryption', 'Node.js crypto', 'backend/controllers/ evidenceController.js']
+  Row 5: ['Audit Logger', 'Built automated ISO 27037 compliant Chain of Custody tracking', 'MongoDB, Express middleware', 'backend/utils/ auditLogger.js']
+
+--- TABLE 8 (3x4) ---
+  Row 0: ['Task / Module', 'My Contribution', 'Tools / Technologies', 'Evidence / Output File']
+  Row 1: ['AI Assistant Engine', 'Engineered live MongoDB regex search and Gemini LLM fallback', 'Node.js, Express, Gemini API', 'backend/controllers/ aiController.js']
+  Row 2: ['AI Assistant UI', 'Designed floating glassmorphic chat widget', 'React 18, Vite, CSS', 'frontend/src/components/ common/ AiChatAssistant.jsx']
+
+--- TABLE 9 (1x5) ---
+  Row 0: ['Test Case ID', 'Scenario / Input', 'Expected Result', 'Actual Result', 'Status']
+
+--- TABLE 10 (1x5) ---
+  Row 0: ['TC01', 'User registration with weak password', 'Reject with password complexity alert', 'Alert displayed (8+ characters, upper, lower, symbol required)', 'Pass']
+
+--- TABLE 11 (5x5) ---
+  Row 0: ['Test Case ID', 'Scenario / Input', 'Expected Result', 'Actual Result', 'Status']
+  Row 1: ['TC02', 'Upload evidence file (image/video/doc)', 'Calculate SHA-256 hash and AES-256 encrypt blob', 'Hash stored in DB, encrypted file saved in backend/uploads/', 'Pass']
+  Row 2: ['TC03', 'Download evidence file', 'Recompute SHA-256 hash and decrypt blob', 'Hash verified as matching; file decrypted cleanly', 'Pass']
+  Row 3: ['TC04', 'AI assistant query (“bank robbery files”)', 'Perform live MongoDB regex search', 'Returns matching titles, filenames and SHA-256 hashes', 'Pass']
+  Row 4: ['TC05', 'Password reset via 2FA OTP', 'Verify 6-digit OTP and set isEmailVerified=tru e', 'Password updated, email verified, login succeeds without warning', 'Pass']
+
+--- TABLE 12 (5x4) ---
+  Row 0: ['Week / Date', 'Activity / Task', 'Technical Learning', 'Outcome / Evidence']
+  Row 1: ['Week 1', 'Requirement analysis, architecture design and database schema setup', 'MongoDB Mongoose schemas (User, Evidence, Case, AuditLog)', 'Database models created']
+  Row 2: ['Week 2', 'Backend API implementation, JWT authentication and Nodemailer 2FA OTP mailer', 'Node.js, Express, Nodemailer SMTP transport', 'Auth controller and email service active']
+  Row 3: ['Week 3', 'Applied cryptography engine (AES-256 / SHA-256) and audit logger', 'Node.js crypto module, ISO 27037 audit tracking', 'Evidence upload/download and audit logs working']
+  Row 4: ['Week 4', 'AI assistant integration, Vite React dashboard and final testing', 'React 18, Vite, regex search, Gemini API', 'Fully functional CivicEvidence DEMS platform']
+
+--- TABLE 13 (7x4) ---
+  Row 0: ['Fig./Evidence No.', 'Description', 'Related CO', 'What it Demonstrates']
+  Row 1: ['Evidence 1 (Figure 9.1.1)', 'Project environment showing backend and frontend source files [1],[3],[4]', 'CO1', 'Exposure to MERN development and the tools used']
+  Row 2: ['Evidence 2 (Figure 9.1.2)', 'Backend (5002) and frontend (5174) servers running locally [3],[4]', 'CO1 / CO3', 'Understanding of local server execution and deployment']
+  Row 3: ['Evidence 3 (Figure 9.2)', 'Architecture diagram of the system [1],[2]', 'CO2', 'Layered security-oriented system design']
+  Row 4: ['Evidence 4 (Figure 9.3.1 / 9.3.2)', 'Login interface and evidence dashboard [3],[4]', 'CO2 / CO3', 'Implementation of the secure web interface']
+  Row 5: ['Evidence 5 (Figure 9.4.1)', 'Chain of Custody audit log [1],[2]', 'CO3 / CO4', 'Audit trail and monitoring of evidence handling']
+  Row 6: ['Evidence 6 (Figure 9.4.2)', 'AI Forensic Assistant search results [5]', 'CO1 / CO3', 'Integration of AI search with the evidence database']
+
+--- TABLE 14 (5x4) ---
+  Row 0: ['CO', 'Course Outcome', 'Evidence', 'Artifact']
+  Row 1: ['CO1', 'Industry practices, processes, techniques, technology, automation and other core aspects of the software industry', 'Used the MERN stack, Node.js crypto, Nodemailer, Vite and secure development practices', 'Sections 1, 5']
+  Row 2: ['CO2', 'Analyze and design solutions to complex business problems', 'Analyzed evidence-handling weaknesses and designed the envelope encryption and audit architecture', 'Sections 3, 4']
+  Row 3: ['CO3', 'Build and deploy solutions for the target platform', 'Developed, tested and deployed the CivicEvidence DEMS locally', 'Sections 5, 6']
+  Row 4: ['CO4', 'Preparation of technical reports and presentations', 'Prepared project documentation, test results, report and presentation', 'Sections 9, 11']
+
+--- TABLE 15 (10x5) ---
+  Row 0: ['S.No.', 'Evaluation Criterion', 'CO', 'Max. Marks', 'Marks Awarded']
+  Row 1: ['1', 'Industry Exposure & Domain Understanding', 'CO1', '20', '']
+  Row 2: ['2', 'Problem Identification & Analysis', 'CO2', '15', '']
+  Row 3: ['3', 'Solution Design & Approach', 'CO2', '15', '']
+  Row 4: ['4', 'Implementation & Technical Skills', 'CO3', '15', '']
+  Row 5: ['5', 'Testing, Results & Deployment', 'CO3', '10', '']
+  Row 6: ['6', 'Technical Report & Documentation', 'CO4', '10', '']
+  Row 7: ['7', 'Presentation & Communication Skills', 'CO4', '10', '']
+  Row 8: ['8', 'Viva / Response to Questions', 'CO1–CO4', '5', '']
+  Row 9: ['', 'TOTAL', '', '100', '']

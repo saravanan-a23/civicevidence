@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CivicEvidence DEMS Technical Presentation</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* CSS Variables & Theme Setup */
+    :root {
+      --bg-dark: hsl(222, 47%, 6%);
+      --bg-light: hsl(222, 47%, 12%);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --primary: #2563eb;
+      --primary-glow: rgba(37, 99, 235, 0.4);
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --glass-bg: rgba(30, 41, 59, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --radius: 16px;
+      --font-primary: 'Outfit', sans-serif;
+      --font-secondary: 'Inter', sans-serif;
+    }
+
+    /* Reset & Base */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-secondary);
+      background: linear-gradient(135deg, var(--bg-dark), var(--bg-light));
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Presentation Frame */
+    .deck-container {
+      flex: 1;
+      position: relative;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    /* Slide Container */
+    .slide {
+      position: absolute;
+      width: 100%;
+      height: 80vh;
+      max-height: 680px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      padding: 48px;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.95) translateY(20px);
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow-y: auto;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1) translateY(0);
+    }
+
+    /* Slide Typography & Titles */
+    .slide-header {
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--glass-border);
+      padding-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .slide-title {
+      font-family: var(--font-primary);
+      font-size: 2.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .slide-num {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    .slide-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Specific Elements */
+    .title-slide-content {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      height: 100%;
+    }
+
+    .logo-shield {
+      font-size: 5rem;
+      filter: drop-shadow(0 0 20px var(--primary-glow));
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .title-slide-content h1 {
+      font-family: var(--font-primary);
+      font-size: 3.8rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #60a5fa, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -1px;
+    }
+
+    .title-slide-content p {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+    }
+
+    /* Grid Layouts */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    /* Content Cards */
+    .presentation-card {
+      background: rgba(15, 23, 42, 0.4);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 24px;
+      transition: all 0.3s ease;
+    }
+
+    .presentation-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+
+    .presentation-card h3 {
+      font-family: var(--font-primary);
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .presentation-card.danger h3 { color: var(--danger); }
+    .presentation-card.success h3 { color: var(--success); }
+    .presentation-card.warning h3 { color: var(--warning); }
+    .presentation-card.primary h3 { color: #60a5fa; }
+
+    .presentation-card p, .presentation-card li {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .presentation-card ul {
+      list-style-position: inside;
+      margin-top: 8px;
+    }
+
+    .presentation-card li {
+      margin-bottom: 6px;
+    }
+
+    /* Table styles */
+    .presentation-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .presentation-table th {
+      background: rgba(37, 99, 235, 0.1);
+      color: #60a5fa;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+      padding: 12px 16px;
+      border-bottom: 2px solid var(--glass-border);
+    }
+
+    .presentation-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--glass-border);
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .presentation-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text-primary);
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 99px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .badge.success { background: rgba(16, 185, 129, 0.15); color: var(--success); }
+    .badge.danger { background: rgba(239, 68, 68, 0.15); color: var(--danger); }
+    .badge.primary { background: rgba(37, 99, 235, 0.15); color: #60a5fa; }
+
+    /* Node flow diagram */
+    .node-diagram {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      position: relative;
+      padding: 40px 0;
+    }
+
+    .node-box {
+      background: rgba(30, 41, 59, 0.8);
+      border: 1px solid var(--glass-border);
+      padding: 20px 30px;
+      border-radius: 12px;
+      text-align: center;
+      min-width: 180px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      z-index: 2;
+    }
+
+    .node-box.highlight {
+      border-color: var(--primary);
+      box-shadow: 0 0 20px var(--primary-glow);
+    }
+
+    .node-box h4 {
+      font-family: var(--font-primary);
+      color: #60a5fa;
+      margin-bottom: 6px;
+    }
+
+    .node-box p {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .node-arrow {
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), #8b5cf6);
+      flex: 1;
+      margin: 0 20px;
+      position: relative;
+      max-width: 120px;
+    }
+
+    .node-arrow::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: -4px;
+      width: 10px;
+      height: 10px;
+      border-right: 2px solid #8b5cf6;
+      border-top: 2px solid #8b5cf6;
+      transform: rotate(45deg);
+    }
+
+    /* Terminal Console */
+    .terminal-box {
+      background: #020617;
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      font-family: monospace;
+      font-size: 0.78rem;
+      color: #10b981;
+      max-height: 380px;
+      overflow-y: auto;
+      text-align: left;
+    }
+
+    .terminal-line {
+      margin-bottom: 4px;
+    }
+
+    .terminal-line.cmd { color: #f8fafc; }
+    .terminal-line.err { color: var(--danger); }
+    .terminal-line.warn { color: var(--warning); }
+
+    /* Navigation Panel */
+    .controls-panel {
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      z-index: 50;
+    }
+
+    .nav-btn {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      color: var(--text-primary);
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-btn:hover:not(:disabled) {
+      background: var(--primary);
+      border-color: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    .nav-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.05);
+      margin: 0 40px;
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), #8b5cf6);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .nav-keyboard-tip {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body class="dark-mode">
+
+  <!-- Slides Deck Container -->
+  <div class="deck-container">
+
+    <!-- Slide 1: Cover -->
+    <div class="slide active" id="slide-1">
+      <div class="title-slide-content">
+        <div class="logo-shield">🛡️</div>
+        <h1>CivicEvidence</h1>
+        <p>Secure Digital Evidence Management System (DEMS) with Envelope Encryption and Immutable Audits</p>
+        <div style="font-size: 0.95rem; color: var(--primary); margin-top: 10px; font-weight: 600;">
+          INVESTIGATION CLEARANCE REQUIRED
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Problem & Solution -->
+    <div class="slide" id="slide-2">
+      <div class="slide-header">
+        <h2 class="slide-title">The Problem vs. The Solution</h2>
+        <span class="slide-num">Slide 2 / 10</span>
+      </div>
+      <div class="slide-body grid-2">
+        <div class="presentation-card danger">
+          <h3>❌ The Challenge</h3>
+          <p>Digital forensics files are highly vulnerable to modifications or leaks during custody handoffs.</p>
+          <ul style="margin-left: 20px; margin-top: 10px;">
+            <li>No mathematical verification of file integrity.</li>
+            <li>Lack of restricted clearance separations.</li>
+            <li>Untraceable views or downloads.</li>
+            <li>Accidental file overwrites lose vital context.</li>
+          </ul>
+        </div>
+        <div class="presentation-card success">
+          <h3>✔ The CivicEvidence DEMS</h3>
+          <p>A cloud-ready platform resolving file authenticity challenges through integrated cryptography.</p>
+          <ul style="margin-left: 20px; margin-top: 10px;">
+            <li>AES-256 Envelope File Encryption.</li>
+            <li>SHA-256 Hashes verified during retrieval.</li>
+            <li>IP-stamped, device-stamped custody logging.</li>
+            <li>Version control with rollbacks.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Architecture -->
+    <div class="slide" id="slide-3">
+      <div class="slide-header">
+        <h2 class="slide-title">System Architecture</h2>
+        <span class="slide-num">Slide 3 / 10</span>
+      </div>
+      <div class="slide-body" style="justify-content: space-around;">
+        <div class="node-diagram">
+          <div class="node-box">
+            <h4>React SPA Frontend</h4>
+            <p>Port 5176 / Vite</p>
+          </div>
+          <div class="node-arrow"></div>
+          <div class="node-box highlight">
+            <h4>Express API</h4>
+            <p>Port 5002 / Rate Limiting</p>
+          </div>
+          <div class="node-arrow"></div>
+          <div class="node-box">
+            <h4>MongoDB / Storage</h4>
+            <p>Metadata & Encrypted Payload</p>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="presentation-card primary">
+            <h3>🖥️ Stateless Frontend</h3>
+            <p>Custom glassmorphic HTML/CSS design loaded via React. Features responsive sidebars, theme triggers, and Recharts statistics modules.</p>
+          </div>
+          <div class="presentation-card primary">
+            <h3>⚙️ Secured API Controllers</h3>
+            <p>Express routes secure access via JWT. Integrates Helmet security headers, CORS guards, and database audit transaction hooks.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Database Model -->
+    <div class="slide" id="slide-4">
+      <div class="slide-header">
+        <h2 class="slide-title">Database ERD Design</h2>
+        <span class="slide-num">Slide 4 / 10</span>
+      </div>
+      <div class="slide-body grid-3">
+        <div class="presentation-card primary">
+          <h3>👤 Users</h3>
+          <p>Registers name, email, salt-hashed password, isEmailVerified, and active status.</p>
+        </div>
+        <div class="presentation-card primary">
+          <h3>📂 Cases</h3>
+          <p>Organizes folders by Case Number, tracking scopes, and assigned Lead Officer.</p>
+        </div>
+        <div class="presentation-card primary">
+          <h3>📄 Evidence</h3>
+          <p>Saves file metadata, category, SHA-256 hash, and encrypted AES key/IV variables.</p>
+        </div>
+        <div class="presentation-card primary">
+          <h3>📝 AuditLogs</h3>
+          <p>Immutable records capturing actions, user ID, IP address, OS and browser signatures.</p>
+        </div>
+        <div class="presentation-card primary">
+          <h3>🤝 Permissions</h3>
+          <p>Granular sharing records establishing read/download rights and expiration dates.</p>
+        </div>
+        <div class="presentation-card primary">
+          <h3>🔄 Versions</h3>
+          <p>Preserves previous file iterations to support rollbacks.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Envelope Encryption -->
+    <div class="slide" id="slide-5">
+      <div class="slide-header">
+        <h2 class="slide-title">Envelope Encryption Workflow</h2>
+        <span class="slide-num">Slide 5 / 10</span>
+      </div>
+      <div class="slide-body grid-2">
+        <div class="presentation-card success" style="grid-column: span 2; margin-bottom: 12px; padding: 16px;">
+          <p><strong>Separation of Metadata and Payload:</strong> Encrypted files are stored on disk / cloud storage, while the encryption keys are encrypted separately and stored inside MongoDB, preventing unauthorized decrypts.</p>
+        </div>
+        <div class="presentation-card primary">
+          <h3>🔒 File Upload & Encryption</h3>
+          <ol style="margin-left: 20px; font-size: 0.9rem; line-height: 1.6;">
+            <li>Backend calculates file SHA-256 hash.</li>
+            <li>Generates unique AES key and IV for this file.</li>
+            <li>Encrypts file buffer via AES-256-CBC.</li>
+            <li>Encrypts the file key with the global <code>MASTER_ENCRYPTION_KEY</code>.</li>
+            <li>Saves payload to disk; key and IV saved to DB.</li>
+          </ol>
+        </div>
+        <div class="presentation-card primary">
+          <h3>🔓 File Download & Decryption</h3>
+          <ol style="margin-left: 20px; font-size: 0.9rem; line-height: 1.6;">
+            <li>Verifies download permission constraints.</li>
+            <li>Fetches encrypted file from storage.</li>
+            <li>Decrypts the file key using the master key.</li>
+            <li>Decrypts payload buffer using decrypted key + IV.</li>
+            <li>Calculates hash and checks integrity before download.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: RBAC Clearance Matrix -->
+    <div class="slide" id="slide-6">
+      <div class="slide-header">
+        <h2 class="slide-title">Role-Based Access Control (RBAC)</h2>
+        <span class="slide-num">Slide 6 / 10</span>
+      </div>
+      <div class="slide-body">
+        <table class="presentation-table">
+          <thead>
+            <tr>
+              <th>System Action</th>
+              <th>Standard User</th>
+              <th>Investigation Officer</th>
+              <th>Administrator</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Upload own files</td>
+              <td><span class="badge success">Allowed</span></td>
+              <td><span class="badge success">Allowed</span></td>
+              <td><span class="badge success">Allowed</span></td>
+            </tr>
+            <tr>
+              <td>Download own files</td>
+              <td><span class="badge success">Allowed</span></td>
+              <td><span class="badge success">Allowed</span></td>
+              <td><span class="badge success">Allowed</span></td>
+            </tr>
+            <tr>
+              <td>Download shared files</td>
+              <td><span class="badge primary">If Shared</span></td>
+              <td><span class="badge success">Allowed</span></td>
+              <td><span class="badge success">Allowed</span></td>
+            </tr>
+            <tr>
+              <td>Create investigation Cases</td>
+              <td><span class="badge danger">Forbidden</span></td>
+              <td><span class="badge success">Allowed</span></td>
+              <td><span class="badge success">Allowed</span></td>
+            </tr>
+            <tr>
+              <td>View full system audit logs</td>
+              <td><span class="badge danger">Forbidden</span></td>
+              <td><span class="badge success">Allowed</span></td>
+              <td><span class="badge success">Allowed</span></td>
+            </tr>
+            <tr>
+              <td>Manage user statuses / clearances</td>
+              <td><span class="badge danger">Forbidden</span></td>
+              <td><span class="badge danger">Forbidden</span></td>
+              <td><span class="badge success">Allowed</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Slide 7: Hardening & Validations -->
+    <div class="slide" id="slide-7">
+      <div class="slide-header">
+        <h2 class="slide-title">API Hardening & Regex Formatting</h2>
+        <span class="slide-num">Slide 7 / 10</span>
+      </div>
+      <div class="slide-body grid-2">
+        <div class="presentation-card warning">
+          <h3>📧 Email Format Pattern</h3>
+          <code style="font-family: monospace; color: var(--warning); display: block; margin-bottom: 8px;">
+            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+          </code>
+          <p>Enforced client-side and API-level. Rejects typos or malformed login requests.</p>
+        </div>
+        <div class="presentation-card warning">
+          <h3>🔑 Password Complexity Pattern</h3>
+          <code style="font-family: monospace; color: var(--warning); display: block; margin-bottom: 8px;">
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/
+          </code>
+          <p>Requires: 8+ length, lowercase, uppercase, digit, and special characters. Enforced on Register, Reset, and Login endpoints.</p>
+        </div>
+        <div class="presentation-card primary" style="grid-column: span 2;">
+          <h3>🛡️ API Protections</h3>
+          <p><strong>Helmet Security:</strong> Blocks Clickjacking and MIME-type sniffing.<br>
+          <strong>Rate Limiting:</strong> Enforces login limit policies to lock out automated brute force tools.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Technical Stack -->
+    <div class="slide" id="slide-8">
+      <div class="slide-header">
+        <h2 class="slide-title">The Technical Stack</h2>
+        <span class="slide-num">Slide 8 / 10</span>
+      </div>
+      <div class="slide-body grid-4">
+        <div class="presentation-card primary" style="text-align: center;">
+          <h1 style="font-size: 3rem; margin-bottom: 8px;">⚛️</h1>
+          <h3>React & Vite</h3>
+          <p>Frontend framework</p>
+        </div>
+        <div class="presentation-card primary" style="text-align: center;">
+          <h1 style="font-size: 3rem; margin-bottom: 8px;">🟢</h1>
+          <h3>Express.js</h3>
+          <p>Backend routing API</p>
+        </div>
+        <div class="presentation-card primary" style="text-align: center;">
+          <h1 style="font-size: 3rem; margin-bottom: 8px;">🍃</h1>
+          <h3>MongoDB</h3>
+          <p>Mongoose database</p>
+        </div>
+        <div class="presentation-card primary" style="text-align: center;">
+          <h1 style="font-size: 3rem; margin-bottom: 8px;">☁️</h1>
+          <h3>AWS S3 SDK</h3>
+          <p>Dual-Mode storage</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Future Scope -->
+    <div class="slide" id="slide-9">
+      <div class="slide-header">
+        <h2 class="slide-title">System Roadmap & Enhancements</h2>
+        <span class="slide-num">Slide 9 / 10</span>
+      </div>
+      <div class="slide-body grid-3">
+        <div class="presentation-card primary">
+          <h3>🔐 Multi-Factor Auth</h3>
+          <p>SMS / TOTP codes verification hooks integrating Google Authenticator.</p>
+        </div>
+        <div class="presentation-card primary">
+          <h3>🦠 Virus Protection</h3>
+          <p>Inline ClamAV scan scanner validating files before the encryption pipeline is triggered.</p>
+        </div>
+        <div class="presentation-card primary">
+          <h3>📄 Court-Signed PDF</h3>
+          <p>Watermarked custody summary reports ready for legal submission.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 10: E2E Logs -->
+    <div class="slide" id="slide-10">
+      <div class="slide-header">
+        <h2 class="slide-title">E2E Verification Execution</h2>
+        <span class="slide-num">Slide 10 / 10</span>
+      </div>
+      <div class="slide-body">
+        <div class="terminal-box">
+          <div class="terminal-line cmd">> node run-full-flow.js</div>
+          <div class="terminal-line">=== CIVICEVIDENCE END-TO-END SYSTEM INTEGRATION FLOW ===</div>
+          <div class="terminal-line">STEP 1: Registering lead administrator account...</div>
+          <div class="terminal-line">✔ Registration API Status: 201 | Role: admin</div>
+          <div class="terminal-line">STEP 2: Submitting simulated email OTP verification...</div>
+          <div class="terminal-line">✔ OTP Verification Status: 200 | Account is active.</div>
+          <div class="terminal-line">STEP 3: Authenticating credentials and establishing session...</div>
+          <div class="terminal-line">✔ Authentication Success. JWT Token: eyJhbGciOiJIUzI1NiIsInR5cCI...</div>
+          <div class="terminal-line">STEP 4: Registering new investigation case directory [CASE-6474]...</div>
+          <div class="terminal-line">✔ Case Registered: DIPLOMATIC VAULT HEIST 2026</div>
+          <div class="terminal-line">STEP 5: Executing secure file upload (AES-256 encryption)...</div>
+          <div class="terminal-line">✔ Encryption & Upload Success. Stored URL: local://1784895567303-cctv.mp4</div>
+          <div class="terminal-line">STEP 6: Checking metadata separation...</div>
+          <div class="terminal-line">✔ Key: 2c756783248d4ddef15fe84126c7... | IV: 60fefdf634759d65f3531f2...</div>
+          <div class="terminal-line">STEP 7: Decrypting and downloading evidence payload...</div>
+          <div class="terminal-line">✔ Decrypted: "MOCK CCTV STREAM BINARY DATA: SUSPECT BREACHED GATE 3..."</div>
+          <div class="terminal-line">✔ INTEGRITY CHECK: PASS (Hashes match. Payload unaltered)</div>
+          <div class="terminal-line">STEP 8: Share permission successfully mapped to collaborator.</div>
+          <div class="terminal-line">STEP 9: Audit log registered successfully.</div>
+          <div class="terminal-line cmd">🏁 CIVICEVIDENCE FULL FLOW VERIFIED SUCCESSFULLY!</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Slide Footer Navigation Controls -->
+  <div class="controls-panel">
+    <button class="nav-btn" id="prev-btn" disabled>Back</button>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+    <span class="nav-keyboard-tip">Use Left/Right Keyboard Arrows</span>
+    <button class="nav-btn" id="next-btn">Next</button>
+  </div>
+
+  <!-- Navigation Control JavaScript -->
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const progressFill = document.getElementById('progress-fill');
+    
+    let currentSlide = 0;
+
+    function updateSlides() {
+      slides.forEach((slide, idx) => {
+        if (idx === currentSlide) {
+          slide.classList.add('active');
+        } else {
+          slide.classList.remove('active');
+        }
+      });
+
+      // Progress bar fill calculation
+      const progressPercent = (currentSlide / (slides.length - 1)) * 100;
+      progressFill.style.width = `${progressPercent}%`;
+
+      // Enable/Disable buttons
+      prevBtn.disabled = currentSlide === 0;
+      nextBtn.disabled = currentSlide === slides.length - 1;
+    }
+
+    prevBtn.addEventListener('click', () => {
+      if (currentSlide > 0) {
+        currentSlide--;
+        updateSlides();
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (currentSlide < slides.length - 1) {
+        currentSlide++;
+        updateSlides();
+      }
+    });
+
+    // Keyboard arrow keys handlers
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        if (currentSlide < slides.length - 1) {
+          currentSlide++;
+          updateSlides();
+        }
+      } else if (e.key === 'ArrowLeft') {
+        if (currentSlide > 0) {
+          currentSlide--;
+          updateSlides();
+        }
+      }
+    });
+
+    // Initialize progress bar
+    updateSlides();
+  </script>
+</body>
+</html>
