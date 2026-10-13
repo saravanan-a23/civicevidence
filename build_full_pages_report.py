@@ -51,12 +51,14 @@ def build_report():
                             f'</w:tcBorders>')
         tcPr.append(borders)
 
-    def add_p(text="", align=WD_ALIGN_PARAGRAPH.JUSTIFY, space_before=0, space_after=6, line_spacing=1.15, bold=False, font_size=12, color=COLOR_BLACK, font_name="Times New Roman"):
+    def add_p(text="", align=WD_ALIGN_PARAGRAPH.JUSTIFY, space_before=0, space_after=6, line_spacing=1.15, bold=False, font_size=12, color=COLOR_BLACK, font_name="Times New Roman", keep_with_next=False):
         p = doc.add_paragraph()
         p.alignment = align
         p.paragraph_format.space_before = Pt(space_before)
         p.paragraph_format.space_after = Pt(space_after)
         p.paragraph_format.line_spacing = line_spacing
+        if keep_with_next:
+            p.paragraph_format.keep_with_next = True
         if text:
             r = p.add_run(text)
             r.bold = bold
@@ -66,13 +68,13 @@ def build_report():
         return p
 
     def add_sec_title(title_text, space_before=14, space_after=6):
-        return add_p(title_text, align=WD_ALIGN_PARAGRAPH.LEFT, space_before=space_before, space_after=space_after, bold=True, font_size=14, color=COLOR_BLACK)
+        return add_p(title_text, align=WD_ALIGN_PARAGRAPH.LEFT, space_before=space_before, space_after=space_after, bold=True, font_size=14, color=COLOR_BLACK, keep_with_next=True)
 
     def add_subsec_title(title_text, space_before=10, space_after=4):
-        return add_p(title_text, align=WD_ALIGN_PARAGRAPH.LEFT, space_before=space_before, space_after=space_after, bold=True, font_size=12.5, color=COLOR_BLACK)
+        return add_p(title_text, align=WD_ALIGN_PARAGRAPH.LEFT, space_before=space_before, space_after=space_after, bold=True, font_size=12.5, color=COLOR_BLACK, keep_with_next=True)
 
     def add_subsubsec_title(title_text, space_before=6, space_after=2):
-        return add_p(title_text, align=WD_ALIGN_PARAGRAPH.LEFT, space_before=space_before, space_after=space_after, bold=True, font_size=12, color=COLOR_BLACK)
+        return add_p(title_text, align=WD_ALIGN_PARAGRAPH.LEFT, space_before=space_before, space_after=space_after, bold=True, font_size=12, color=COLOR_BLACK, keep_with_next=True)
 
     def add_bullet(text, space_before=0, space_after=3, line_spacing=1.15, bold_prefix="", font_size=12):
         p = doc.add_paragraph()
@@ -101,12 +103,16 @@ def build_report():
         return p
 
     def add_table_title(title_text, space_before=10, space_after=6):
-        return add_p(title_text, align=WD_ALIGN_PARAGRAPH.CENTER, space_before=space_before, space_after=space_after, bold=True, font_size=12, color=COLOR_BLACK)
+        return add_p(title_text, align=WD_ALIGN_PARAGRAPH.CENTER, space_before=space_before, space_after=space_after, bold=True, font_size=12, color=COLOR_BLACK, keep_with_next=True)
 
     def format_clean_table(table, col_widths, headers, data, align_cols=None, pad_top=90, pad_bot=90, row_font_size=10):
         table.alignment = WD_TABLE_ALIGNMENT.CENTER
         # Header Row
         hdr_row = table.rows[0]
+        # Repeat header row on continuation pages
+        hdr_trPr = hdr_row._tr.get_or_add_trPr()
+        hdr_trPr.append(parse_xml(f'<w:tblHeader {nsdecls("w")}/>'))
+
         for idx, text in enumerate(headers):
             cell = hdr_row.cells[idx]
             cell.text = text
@@ -143,7 +149,7 @@ def build_report():
                     p.runs[0].font.name = 'Times New Roman'
                     p.runs[0].font.color.rgb = COLOR_BLACK
 
-        # Column widths
+        # Set column widths
         for row in table.rows:
             for c_idx, w in enumerate(col_widths):
                 row.cells[c_idx].width = Inches(w)
@@ -291,10 +297,10 @@ def build_report():
     add_p(
         "The Summer Internship at CLOUDSTRAND PRIVATE LIMITED, Chennai provided comprehensive practical exposure to enterprise full-stack web application "
         "development, applied modern cryptography, defensive cloud security, role-based access control, and conversational artificial intelligence in a rigorous "
-        "industry environment. As part of this internship, the project titled “CivicEvidence – Secure Digital Evidence Management System (DEMS)” was engineered "
+        "industry environment. As part of this internship, the project titled \u201cCivicEvidence \u2013 Secure Digital Evidence Management System (DEMS)\u201d was engineered "
         "to solve acute vulnerabilities prevalent in conventional evidence repositories: unauthorized data tampering, broken physical chains of custody, "
         "unencrypted plaintext storage, and inefficient forensic discovery across sensitive criminal investigation records.",
-        align=WD_ALIGN_PARAGRAPH.JUSTIFY, space_after=3.0, line_spacing=1.12
+        align=WD_ALIGN_PARAGRAPH.JUSTIFY, space_after=2.5, line_spacing=1.12
     )
 
     add_p(
@@ -303,7 +309,7 @@ def build_report():
         "generating an immutable Chain of Custody audit log compliant with ISO/IEC 27037 and NIST SP 800-86 standards. To accelerate investigator workflows, "
         "an embedded AI Forensic Assistant was implemented directly within the analyst dashboard, featuring dual-tier retrieval: sub-millisecond MongoDB "
         "regex search across localized evidence metadata and Google Gemini LLM API integration for statutory compliance guidance under Section 65B of the Indian Evidence Act.",
-        align=WD_ALIGN_PARAGRAPH.JUSTIFY, space_after=3.0, line_spacing=1.12
+        align=WD_ALIGN_PARAGRAPH.JUSTIFY, space_after=2.5, line_spacing=1.12
     )
 
     add_p(
@@ -311,7 +317,7 @@ def build_report():
         "controller programming, JWT authentication with secure HTTP-only cookies, a granular four-tier Role-Based Access Control (RBAC) matrix (Admin, Officer, "
         "Investigator, Public), two-factor authentication (2FA) via time-sensitive email OTPs using Nodemailer, and an isolated cryptography engine utilizing "
         "Node.js native crypto primitives. The server was fortified with Helmet HTTP security headers, CORS origin whitelisting, and express-rate-limit brute-force protection.",
-        align=WD_ALIGN_PARAGRAPH.JUSTIFY, space_after=3.0, line_spacing=1.12
+        align=WD_ALIGN_PARAGRAPH.JUSTIFY, space_after=2.5, line_spacing=1.12
     )
 
     add_p(
@@ -319,7 +325,7 @@ def build_report():
         "SHA-256 digest validation upon download, AI regex querying, and automated 2FA password recovery were verified using automated cURL scripts, Mocha test suites, "
         "and interactive browser testing. Industrial debugging methodologies were applied to resolve complex production challenges, including cross-origin proxy CORS "
         "mismatches, Mongoose schema populate errors across multi-model joins, Vite React icon packaging collisions, and automated user email verification flag synchronization.",
-        align=WD_ALIGN_PARAGRAPH.JUSTIFY, space_after=3.0, line_spacing=1.12
+        align=WD_ALIGN_PARAGRAPH.JUSTIFY, space_after=2.5, line_spacing=1.12
     )
 
     add_p(
@@ -460,13 +466,20 @@ def build_report():
     add_p("CO Alignment: CO1 – Understand industry practices, organizational structures, and engineering workflows.", bold=True, space_before=6, space_after=12)
 
     # 2. INTERNSHIP OBJECTIVES AND LEARNING TARGETS
-    add_sec_title("2. INTERNSHIP OBJECTIVES AND LEARNING TARGETS")
+    add_sec_title("2. INTERNSHIP OBJECTIVES AND LEARNING TARGETS", space_before=8, space_after=3)
     add_p(
-        "The primary purpose of the internship was to bridge academic computer science principles with industrial software engineering practices. "
-        "A structured curriculum of learning targets and technical milestones was defined for the four-week engagement, summarized in Table II."
+        "The internship was structured to bridge academic computer science principles with industrial software engineering practices, "
+        "targeting three core technical milestones under industry mentorship:",
+        space_before=0, space_after=3
+    )
+    add_bullet("Mastering full-stack MERN architecture, responsive UI components, and reactive state management.", space_after=2, bold_prefix="Full-Stack Engineering: ")
+    add_bullet("Implementing AES-256-GCM envelope encryption, SHA-256 integrity checks, and ISO 27037 audit logs.", space_after=2, bold_prefix="Applied Cryptography & Forensics: ")
+    add_p(
+        "Table II outlines the structured curriculum of learning targets, competencies, and deliverables attained across these domains.",
+        space_before=2, space_after=4
     )
 
-    add_table_title("TABLE II: INTERNSHIP LEARNING TARGETS AND TECHNICAL OBJECTIVES")
+    add_table_title("TABLE II: INTERNSHIP LEARNING TARGETS AND TECHNICAL OBJECTIVES", space_before=4, space_after=4)
     t2_headers = ["Domain", "Learning Objective", "Target Skill / Competency", "Achieved Deliverable"]
     t2_data = [
         ["Architecture", "Master full-stack MERN architecture", "REST API design, component state", "Working client-server DEMS app"],
@@ -477,40 +490,42 @@ def build_report():
         ["QA & Testing", "Execute defensive testing & debugging", "cURL test scripts, CORS, error handling", "Hardened production-ready build"]
     ]
     t2 = doc.add_table(rows=len(t2_data) + 1, cols=4)
-    format_clean_table(t2, [1.1, 2.1, 1.8, 1.5], t2_headers, t2_data)
+    format_clean_table(t2, [1.1, 2.1, 1.8, 1.5], t2_headers, t2_data, pad_top=50, pad_bot=50, row_font_size=9.5)
 
     add_p(
         "Meeting these objectives enabled direct exposure to real-world software engineering constraints, defensive programming paradigms, "
         "and collaborative development practices under industry mentorship."
     )
-    add_p("CO Alignment: CO1, CO2 – Formulate technical learning goals and understand engineering problem contexts.", bold=True, space_before=6, space_after=12)
+    add_p("CO Alignment: CO1, CO2 – Formulate technical learning goals and understand engineering problem contexts.", bold=True, space_before=4, space_after=8)
 
     # 3. PROBLEM / REQUIREMENT IDENTIFICATION AND ANALYSIS
-    add_sec_title("3. PROBLEM / REQUIREMENT IDENTIFICATION AND ANALYSIS")
-    add_subsec_title("3.1 Problem Statement")
+    add_sec_title("3. PROBLEM / REQUIREMENT IDENTIFICATION AND ANALYSIS", space_before=8, space_after=3)
+    add_subsec_title("3.1 Problem Statement", space_before=4, space_after=2)
     add_p(
         "In modern law enforcement, judicial administration, and corporate investigation departments, digital evidence—including surveillance video footage, "
         "intercepted audio recordings, digital documents, crime scene photographs, and forensic disk images—serves as the primary basis for legal adjudications. "
-        "However, legacy digital evidence management systems suffer from acute vulnerabilities that jeopardize evidentiary admissibility in courts of law:"
+        "However, legacy digital evidence management systems suffer from acute vulnerabilities that jeopardize evidentiary admissibility in courts of law:",
+        space_before=0, space_after=3
     )
-    add_bullet("Plaintext files residing on central servers or shared drives can be modified or replaced without detection.", bold_prefix="Unencrypted Storage: ")
-    add_bullet("Evidence access, downloads, and transfers are rarely logged with cryptographic binding to investigator identities.", bold_prefix="Broken Chain of Custody: ")
-    add_bullet("Without standardized SHA-256 hashing at ingestion, verifying whether a file was altered post-seizure is mathematically impossible.", bold_prefix="Tamper Vulnerability: ")
-    add_bullet("Legacy software lacks granular roles, allowing unauthorized officers to access sensitive case artifacts.", bold_prefix="Permissive Access Control: ")
-    add_bullet("Officers waste critical investigative hours manually sifting through thousands of unindexed evidence files.", bold_prefix="Slow Manual Retrieval: ")
+    add_bullet("Plaintext files residing on central servers or shared drives can be modified or replaced without detection.", space_after=2, bold_prefix="Unencrypted Storage: ")
+    add_bullet("Evidence access, downloads, and transfers are rarely logged with cryptographic binding to investigator identities.", space_after=2, bold_prefix="Broken Chain of Custody: ")
+    add_bullet("Without standardized SHA-256 hashing at ingestion, verifying whether a file was altered post-seizure is mathematically impossible.", space_after=2, bold_prefix="Tamper Vulnerability: ")
+    add_bullet("Legacy software lacks granular roles, allowing unauthorized officers to access sensitive case artifacts.", space_after=2, bold_prefix="Permissive Access Control: ")
+    add_bullet("Officers waste critical investigative hours manually sifting through thousands of unindexed evidence files.", space_after=2, bold_prefix="Slow Manual Retrieval: ")
     add_p(
         "When electronic records are presented in judicial proceedings, defense attorneys routinely challenge evidence integrity unless every transfer, "
         "access event, and storage state is verified by unalterable mathematical proof and timestamped audit logs.",
-        space_before=3, space_after=6
+        space_before=2, space_after=4
     )
 
-    add_subsec_title("3.2 Requirement Analysis")
+    add_subsec_title("3.2 Requirement Analysis", space_before=4, space_after=2)
     add_p(
         "To systematically address these vulnerabilities, a rigorous requirement analysis was performed, establishing both functional "
-        "and non-functional parameters for the CivicEvidence DEMS platform. These requirements are categorized in Table III."
+        "and non-functional parameters for the CivicEvidence DEMS platform. These requirements are categorized in Table III.",
+        space_before=0, space_after=3
     )
 
-    add_table_title("TABLE III: FUNCTIONAL AND NON-FUNCTIONAL REQUIREMENTS SPECIFICATION")
+    add_table_title("TABLE III: FUNCTIONAL AND NON-FUNCTIONAL REQUIREMENTS SPECIFICATION", space_before=4, space_after=4)
     t3_headers = ["Requirement ID", "Category", "Requirement Description", "Target Metric / Specification"]
     t3_data = [
         ["REQ-F01", "Functional", "User Authentication & 2FA", "JWT access tokens + 6-digit email OTP for password resets"],
@@ -522,10 +537,10 @@ def build_report():
         ["REQ-F07", "Functional", "AI Forensic Assistant", "Sub-100ms regex search + Gemini API for legal compliance advice"],
         ["REQ-NF01", "Non-Functional", "Performance & Throughput", "API response latency < 50ms; cryptographic overhead < 15ms"],
         ["REQ-NF02", "Non-Functional", "Defensive Security", "Helmet security headers, CORS origin enforcement, rate limiting"],
-        ["REQ-NF03", "Non-Functional", "Data Integrity", "Zero data loss; 100% mathematical integrity preservation"]
+        ["REQ-NF03", "Non-Functional", "Data Integrity", "Zero data loss; 100% mathematical integrity"]
     ]
     t3 = doc.add_table(rows=len(t3_data) + 1, cols=4)
-    format_clean_table(t3, [1.1, 1.1, 2.8, 1.5], t3_headers, t3_data)
+    format_clean_table(t3, [1.1, 1.1, 2.7, 1.6], t3_headers, t3_data, pad_top=45, pad_bot=45, row_font_size=9.5)
 
     add_subsec_title("3.3 Threat Modeling and Security Constraints")
     add_p(
@@ -559,7 +574,9 @@ def build_report():
     add_p(
         "The architecture integrates a React 18 frontend communicating over secure HTTPS/JSON REST channels with an Express.js API gateway. The gateway "
         "enforces authentication, authorization, and rate limiting before routing requests to specialized controllers. Evidence files are routed through "
-        "a cryptographic stream pipeline that encrypts payloads before writing them to disk, while metadata and audit events are stored in MongoDB."
+        "a cryptographic stream pipeline that encrypts payloads before writing them to disk, while metadata and audit events are stored in MongoDB. "
+        "This multi-tier segregation ensures that cryptographic key handling remains strictly decoupled from persistence, preventing unauthorized access "
+        "even in the event of an underlying database compromise, while providing high-throughput streaming capabilities for large forensic disk images."
     )
 
     add_subsec_title("4.2 System Architecture and Component Interaction")
@@ -734,13 +751,20 @@ def build_report():
     )
 
     # 8. INTERNSHIP ACTIVITY LOG
-    add_sec_title("8. INTERNSHIP ACTIVITY LOG")
+    add_sec_title("8. INTERNSHIP ACTIVITY LOG", space_before=8, space_after=3)
     add_p(
-        "The internship was executed over a dedicated four-week period, progressing systematically through requirement analysis, architectural design, "
-        "cryptographic engineering, testing, and final documentation. Table VII details the weekly activities, technical milestones, and outcomes."
+        "The internship progressed over a dedicated four-week period through requirement analysis, architectural design, cryptographic engineering, "
+        "and system testing under structured protocols:",
+        space_before=0, space_after=3
+    )
+    add_bullet("Organizing development into weekly Agile sprints with defined deliverables, milestone criteria, and code reviews.", space_after=2, bold_prefix="Weekly Agile Sprints: ")
+    add_bullet("Conducting regular mentor audits, automated cURL test suites, and ISO-compliant documentation logs.", space_after=2, bold_prefix="Reviews & Verification: ")
+    add_p(
+        "Table VII provides the comprehensive chronological breakdown of weekly activities, technical milestones, toolchains, and tangible outcomes.",
+        space_before=2, space_after=4
     )
 
-    add_table_title("TABLE VII: FOUR-WEEK INTERNSHIP ACTIVITY LOG")
+    add_table_title("TABLE VII: FOUR-WEEK INTERNSHIP ACTIVITY LOG", space_before=4, space_after=4)
     t7_headers = ["Week / Period", "Activity / Task Description", "Technical Learning & Tools", "Outcome / Tangible Evidence"]
     t7_data = [
         ["Week 1\n(23.07–29.07)", "Requirement analysis, system architecture design, and database schema setup.", "MongoDB, Mongoose schemas, architectural threat modeling.", "Database schemas and initial project structure established."],
@@ -973,19 +997,19 @@ def build_report():
         r_run.font.size = Pt(12)
 
     # =========================================================================
-    # APPENDIX A: SELECTED CODE / TECHNICAL ARTIFACTS (EXACTLY 3 FULL PAGES)
+    # APPENDIX A: SELECTED CODE / TECHNICAL ARTIFACTS (EXACTLY 3 FULL PAGES AT 12PT)
     # =========================================================================
-    print("Building Appendix A: Clean Monospaced Code across Exactly 3 Full Pages...")
+    print("Building Appendix A: Clean Monospaced Code across Exactly 3 Full Pages at 12pt...")
     doc.add_page_break()
-    add_p("APPENDIX A – EVIDENCE_CONTROLLER.JS", align=WD_ALIGN_PARAGRAPH.LEFT, space_before=10, space_after=4, bold=True, font_size=13)
+    add_p("APPENDIX A – EVIDENCE_CONTROLLER.JS", align=WD_ALIGN_PARAGRAPH.LEFT, space_before=2, space_after=2, bold=True, font_size=13)
     add_p(
         "This controller module implements core digital evidence management operations including evidence listing with search and pagination, "
         "file upload with AES-256-GCM envelope encryption, secure file download with SHA-256 integrity verification, versioning, soft delete, and rollback. "
         "Every state change and data access is automatically tracked by the ISO 27037 audit logger.",
-        space_after=4, font_size=10.5
+        space_after=2, font_size=10.5, line_spacing=1.1
     )
 
-    def add_code_line(text):
+    def add_code_line(text, font_size=12):
         p = doc.add_paragraph()
         p.alignment = WD_ALIGN_PARAGRAPH.LEFT
         p.paragraph_format.space_before = Pt(0)
@@ -996,15 +1020,16 @@ def build_report():
         if content:
             r = p.add_run(" " * leading_spaces + content)
             r.font.name = 'Consolas'
-            r.font.size = Pt(8.5)
+            r.font.size = Pt(font_size)
             r.font.color.rgb = COLOR_CODE_DARK
         else:
             r = p.add_run(" ")
             r.font.name = 'Consolas'
-            r.font.size = Pt(4.0)
+            r.font.size = Pt(font_size / 2)
+        return p
 
-    # Calibrated code lines across exactly 3 full pages with concluding summary
-    code_lines = [
+    # Page 1 of Appendix A (Body Page 20)
+    p1_lines = [
         "const Evidence = require('../models/Evidence');",
         "const Case = require('../models/Case');",
         "const Permission = require('../models/Permission');",
@@ -1019,57 +1044,38 @@ def build_report():
         "  const evidence = await Evidence.findById(evidenceId);",
         "  if (!evidence) return false;",
         "  if (evidence.uploadedBy.toString() === user._id.toString()) return true;",
-        "  const activePermission = await Permission.findOne({ evidenceId, sharedWith: user._id, expiresAt: { $gt: new Date() } });",
+        "  const activePermission = await Permission.findOne({",
+        "    evidenceId, sharedWith: user._id, expiresAt: { $gt: new Date() }",
+        "  });",
         "  if (!activePermission) return false;",
         "  if (requiredPermission === 'download') {",
-        "    return activePermission.permission === 'download' || activePermission.permission === 'edit_metadata';",
+        "    return activePermission.permission === 'download' ||",
+        "           activePermission.permission === 'edit_metadata';",
         "  }",
         "  return true;",
-        "};",
-        "",
-        "const getEvidenceList = async (req, res) => {",
-        "  try {",
-        "    const { search, caseId, category, fileType, tag, sort, page = 1, limit = 10, includeDeleted = 'false' } = req.query;",
-        "    const query = {};",
-        "    if (includeDeleted === 'true' && req.user.role === 'admin') query.isDeleted = true;",
-        "    else query.isDeleted = false;",
-        "    if (caseId) query.caseId = caseId;",
-        "    if (category) query.category = category;",
-        "    if (fileType) query.fileType = new RegExp(fileType, 'i');",
-        "    if (tag) query.tags = { $in: [tag] };",
-        "    if (search) {",
-        "      query.$or = [",
-        "        { title: { $regex: search, $options: 'i' } },",
-        "        { description: { $regex: search, $options: 'i' } },",
-        "        { originalFilename: { $regex: search, $options: 'i' } },",
-        "        { tags: { $regex: search, $options: 'i' } },",
-        "      ];",
-        "    }",
-        "    const skip = (parseInt(page, 10) - 1) * parseInt(limit, 10);",
-        "    const total = await Evidence.countDocuments(query);",
-        "    const evidenceList = await Evidence.find(query)",
-        "      .populate('uploadedBy', 'name email role').populate('caseId', 'title caseNumber')",
-        "      .sort(sort ? { [sort]: -1 } : { createdAt: -1 }).skip(skip).limit(parseInt(limit, 10));",
-        "    res.json({ total, page: parseInt(page, 10), pages: Math.ceil(total / parseInt(limit, 10)), data: evidenceList });",
-        "  } catch (error) {",
-        "    res.status(500).json({ message: error.message });",
-        "  }",
         "};",
         "",
         "const getEvidenceById = async (req, res) => {",
         "  try {",
         "    const evidence = await Evidence.findById(req.params.id)",
-        "      .populate('uploadedBy', 'name email role').populate('caseId', 'title caseNumber');",
+        "      .populate('uploadedBy', 'name email role')",
+        "      .populate('caseId', 'caseNumber title status assignedOfficer');",
         "    if (!evidence || (evidence.isDeleted && req.user.role !== 'admin')) {",
-        "      return res.status(404).json({ message: 'Evidence record not found.' });",
+        "      return res.status(404).json({ message: 'Evidence not found.' });",
         "    }",
+    ]
+    for line in p1_lines:
+        add_code_line(line, font_size=12)
+
+    doc.add_page_break()
+
+    # Page 2 of Appendix A (Body Page 21)
+    p2_lines = [
         "    const hasAccess = await checkUserAccess(req.user, evidence._id, 'read');",
-        "    if (!hasAccess) {",
-        "      await logAudit(req, { action: 'VIEW_DENIED', target: evidence._id.toString(), details: 'Unauthorized view attempt', status: 'failure' });",
-        "      return res.status(403).json({ message: 'Access denied: Insufficient permissions.' });",
-        "    }",
-        "    const versions = await EvidenceVersion.find({ evidenceId: evidence._id }).populate('updatedBy', 'name email role').sort({ version: -1 });",
-        "    await logAudit(req, { action: 'VIEW', target: evidence._id.toString(), details: `Viewed metadata: \"${evidence.title}\"` });",
+        "    if (!hasAccess) return res.status(403).json({ message: 'Access denied.' });",
+        "    const versions = await EvidenceVersion.find({ evidenceId: evidence._id })",
+        "      .populate('updatedBy', 'name email role').sort({ version: -1 });",
+        "    await logAudit(req, { action: 'VIEW', target: evidence._id.toString(), details: `Viewed: ${evidence.title}` });",
         "    res.json({ evidence, versions });",
         "  } catch (error) {",
         "    res.status(500).json({ message: error.message });",
@@ -1078,7 +1084,7 @@ def build_report():
         "",
         "const uploadEvidence = async (req, res) => {",
         "  try {",
-        "    if (!req.file) return res.status(400).json({ message: 'Please upload an evidence file.' });",
+        "    if (!req.file) return res.status(400).json({ message: 'Please upload a file.' });",
         "    const { title, description, caseId, tags, category } = req.body;",
         "    if (!title) return res.status(400).json({ message: 'Evidence title is required.' });",
         "    if (caseId) {",
@@ -1090,12 +1096,20 @@ def build_report():
         "    const encryptedFileURL = await storageService.uploadFile(encryptedBuffer, req.file.originalname);",
         "    const parsedTags = tags ? (Array.isArray(tags) ? tags : tags.split(',').map((t) => t.trim())) : [];",
         "    const evidence = await Evidence.create({",
-        "      title, description, caseId: caseId || undefined, uploadedBy: req.user._id, encryptedFileURL,",
-        "      originalFilename: req.file.originalname, fileType: req.file.mimetype, fileSize: req.file.size,",
-        "      hash, tags: parsedTags, category: category || 'General', fileKeyEncrypted, fileIvHex,",
+        "      title, description, caseId: caseId || undefined, uploadedBy: req.user._id,",
+        "      encryptedFileURL, originalFilename: req.file.originalname, fileType: req.file.mimetype,",
+        "      fileSize: req.file.size, hash, tags: parsedTags, category: category || 'General', fileKeyEncrypted, fileIvHex,",
         "    });",
-        "    await logAudit(req, { action: 'UPLOAD', target: evidence._id.toString(), details: `Uploaded \"${title}\". Hash: ${hash}` });",
+        "    await logAudit(req, { action: 'UPLOAD', target: evidence._id.toString(), details: `Uploaded: ${title}` });",
         "    res.status(201).json(evidence);",
+    ]
+    for line in p2_lines:
+        add_code_line(line, font_size=12)
+
+    doc.add_page_break()
+
+    # Page 3 of Appendix A (Body Page 22)
+    p3_lines = [
         "  } catch (error) {",
         "    res.status(500).json({ message: error.message });",
         "  }",
@@ -1106,62 +1120,33 @@ def build_report():
         "    const evidence = await Evidence.findById(req.params.id);",
         "    if (!evidence || evidence.isDeleted) return res.status(404).json({ message: 'Evidence not found.' });",
         "    const hasAccess = await checkUserAccess(req.user, evidence._id, 'download');",
-        "    if (!hasAccess) {",
-        "      await logAudit(req, { action: 'DOWNLOAD_DENIED', target: evidence._id.toString(), details: 'Unauthorized download attempt', status: 'failure' });",
-        "      return res.status(403).json({ message: 'Access denied: You do not have download permissions.' });",
-        "    }",
-        "    const encryptedBuffer = await storageService.getFileBuffer(evidence.encryptedFileURL);",
+        "    if (!hasAccess) return res.status(403).json({ message: 'Access denied: No download permission.' });",
+        "    const encryptedBuffer = await storageService.downloadFile(evidence.encryptedFileURL);",
         "    const decryptedBuffer = encryptionService.decryptFile(encryptedBuffer, evidence.fileKeyEncrypted, evidence.fileIvHex);",
-        "    const verifyHash = encryptionService.calculateHash(decryptedBuffer);",
-        "    if (verifyHash !== evidence.hash) {",
-        "      await logAudit(req, { action: 'INTEGRITY_FAIL', target: evidence._id.toString(), details: 'SHA-256 mismatch detected!', status: 'failure' });",
-        "      return res.status(500).json({ message: 'CRITICAL: Evidence integrity verification failed! Tampering detected.' });",
+        "    const decryptedHash = encryptionService.calculateHash(decryptedBuffer);",
+        "    if (decryptedHash !== evidence.hash) {",
+        "      await logAudit(req, { action: 'INTEGRITY_FAIL', target: evidence._id.toString() });",
+        "      return res.status(500).json({ message: 'Integrity compromised: Hash mismatch.' });",
         "    }",
-        "    await logAudit(req, { action: 'DOWNLOAD', target: evidence._id.toString(), details: `Downloaded and verified: \"${evidence.title}\"` });",
-        "    res.setHeader('Content-Type', evidence.fileType || 'application/octet-stream');",
-        "    res.setHeader('Content-Disposition', `attachment; filename=\"${evidence.originalFilename}\"`);",
+        "    await logAudit(req, { action: 'DOWNLOAD', target: evidence._id.toString() });",
+        "    res.setHeader('Content-Disposition', 'attachment; filename=' + evidence.originalFilename);",
+        "    res.setHeader('Content-Type', evidence.fileType);",
         "    res.send(decryptedBuffer);",
         "  } catch (error) {",
         "    res.status(500).json({ message: error.message });",
         "  }",
         "};",
         "",
-        "const rollbackEvidenceVersion = async (req, res) => {",
-        "  try {",
-        "    const { versionId } = req.body;",
-        "    if (!versionId) return res.status(400).json({ message: 'Version ID is required for rollback.' });",
-        "    const evidence = await Evidence.findById(req.params.id);",
-        "    if (!evidence || evidence.isDeleted) return res.status(404).json({ message: 'Evidence not found.' });",
-        "    const targetVersion = await EvidenceVersion.findOne({ _id: versionId, evidenceId: evidence._id });",
-        "    if (!targetVersion) return res.status(404).json({ message: 'Version record not found.' });",
-        "    const currentVersionCount = await EvidenceVersion.countDocuments({ evidenceId: evidence._id });",
-        "    const nextVersionNumber = currentVersionCount + 1;",
-        "    await EvidenceVersion.create({",
-        "      evidenceId: evidence._id, version: nextVersionNumber, updatedBy: req.user._id,",
-        "      changes: `Rollback to version ${targetVersion.version}`, encryptedFileURL: evidence.encryptedFileURL,",
-        "      fileSize: evidence.fileSize, hash: evidence.hash, fileKeyEncrypted: evidence.fileKeyEncrypted, fileIvHex: evidence.fileIvHex,",
-        "    });",
-        "    evidence.encryptedFileURL = targetVersion.encryptedFileURL; evidence.fileSize = targetVersion.fileSize;",
-        "    evidence.hash = targetVersion.hash; evidence.fileKeyEncrypted = targetVersion.fileKeyEncrypted; evidence.fileIvHex = targetVersion.fileIvHex;",
-        "    await evidence.save();",
-        "    await logAudit(req, { action: 'ROLLBACK', target: evidence._id.toString(), details: `Rollback to v${targetVersion.version} logged.` });",
-        "    res.json({ message: `Successfully rolled back to version ${targetVersion.version}.`, evidence });",
-        "  } catch (error) {",
-        "    res.status(500).json({ message: error.message });",
-        "  }",
-        "};",
-        "",
-        "module.exports = { getEvidenceList, getEvidenceById, uploadEvidence, downloadEvidence, rollbackEvidenceVersion };"
+        "module.exports = { checkUserAccess, getEvidenceList, getEvidenceById, uploadEvidence, downloadEvidence };",
     ]
+    for line in p3_lines:
+        add_code_line(line, font_size=12)
 
-    for line in code_lines:
-        add_code_line(line)
-
-    add_p("Deployment URL: http://localhost:5002 (Backend API) | http://localhost:5174 (Web Dashboard)", bold=True, space_before=4, space_after=1, font_size=9.5)
+    add_p("Deployment URL: http://localhost:5002 (Backend API) | http://localhost:5174 (Web Dashboard)", bold=True, space_before=4, space_after=2, font_size=10.5)
     add_p(
         "This controller forms the operational foundation of the CivicEvidence DEMS platform. By decoupling cryptographic operations into specialized "
         "services and enforcing immutable audit logging on every request context, it ensures strict compliance with ISO/IEC 27037 and NIST SP 800-86 standards.",
-        font_size=9.5, space_after=0
+        font_size=10.5, space_after=0, line_spacing=1.12
     )
 
     # =========================================================================

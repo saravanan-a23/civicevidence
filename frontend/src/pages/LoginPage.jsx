@@ -118,12 +118,12 @@ const LoginPage = () => {
           </div>
 
           <button type="submit" className="btn btn-primary login-btn" disabled={isSubmitting}>
-            {isSubmitting ? 'Authenticating...' : 'Establish Secure Connection'}
+            {isSubmitting ? 'Authenticating...' : 'Login'}
           </button>
         </form>
 
         <div className="login-footer">
-          <span>Need system access?</span>{' '}
+          <span>New User?</span>{' '}
           <Link to="/register" style={{ color: 'var(--primary)', fontWeight: '600' }}>
             Submit Access Request
           </Link>

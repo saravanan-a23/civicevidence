@@ -64,6 +64,15 @@ def format_and_export():
             pn2.RestartNumberingAtSection = True
             pn2.StartingNumber = 1
 
+        # Configure all multi-column data tables to repeat headers on continuation pages
+        for t_idx in range(1, doc.Tables.Count + 1):
+            t = doc.Tables(t_idx)
+            if t.Rows.Count > 1 and t.Columns.Count >= 4:
+                try:
+                    t.Rows(1).HeadingFormat = -1 # True: Repeat Header Row on continuation pages
+                except Exception as e:
+                    print(f"Table {t_idx} config error: {e}")
+
         doc.Fields.Update()
 
         # 3. Find the Table of Contents table (table with 20 rows)
